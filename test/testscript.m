@@ -1,53 +1,66 @@
-% function testscript(pname,direction,movingwin,segave,params,fscorr)
+% TESTSCRIPT
 %
-% This script runs a sequence of analysis steps using the test
-% data contained in data. The data consists of a single tetrode
+% This script runs a sequence of analysis steps using the test data
+% contained in directory 'data'. The data consists of a single tetrode
 % recording from macaque area LIP during a memory saccade experiment
-% a la Pesaran et al (2002). The data is already separated into
-% spikes and LFPs. LFPs are contained in variable dlfp, spikes from two
-% neurons are in in a struct array dsp, and event information is in
-% the following set of variables:
+% (Pesaran, B., Pezaris, J. S., Sahani, M., Mitra, P. P., & Andersen, R. A.
+% (2002). Temporal structure in neuronal activity during working memory in
+% macaque parietal cortex. Nature Neuroscience, 5(8), 805-811.). The data
+% are already separated into spikes and LFPs. LFPs are contained in
+% variable 'dlfp'. Spikes from two neurons are in in a struct array 'dsp'.
+% Event information is in the following set of variables:
 %
-% trialtimes - start times of trials
-% fixon - fixation light comes on
-% fixacq - fixation acquired
-% targon - target light on
-% targoff - target light off
-% fixoff - fixation off
-% saccade - saccade
+%   trialtimes  - start times of trials
+%   fixon       - fixation light comes on
+%   fixacq      - fixation acquired
+%   targon      - target light on
+%   targoff     - target light off
+%   fixoff      - fixation off
+%   saccade     - saccade
 %
 % Note that spikes and event times are in seconds and the sampling
 % frequency for the LFP in this experiment was 1kHz.
 %
-% the script takes the following input argument - 
-% pname - path name on your computer where the data file LIPdata is stored.
-% direction - target direction to be analysed (0-7)
+% Parameters: 
+%   pname       - path name on your computer where the data file LIPdata is
+%                 stored.
+%   direction   - target direction to be analysed (0-7)
 %
 % The remaining parameters control various computations and are discussed
-% in chronux.m - type Help chronux.m for more information.
+% in chronux.m - type Help chronux.m - or chronux manual for more
+% information.
 % 
-% if nargin < 4;
-%     error('Need 6 input parameters - see help');
-% end;
-% if nargin < 5 | isempty(params);
-%    [tapers,pad,Fs,fpass,err,trialave,params]=getparams(params);
-% end;
-% if nargin < 6 | isempty(fscorr);
-%     fscorr=1;
-% end;
-pname='data';
+%   movingwin   - moving window size for time-frequency analysis, [winsize,
+%                 winstep] in units consistent with Fs 
+%   segave      - 1: average over segment; 0: no average
+
+
+% Copyright 2018 Richard J. Cui. inital modified: Thu 02/22/2018 11:56:39.847 PM
+% $ Revision: 0.1 $  $ Date: Thu 02/22/2018 11:56:39.847 PM $
+%
+% 3236 E Chandler Blvd Unit 2036
+% Phoenix, AZ 85048, USA
+%
+% Email: richard.jie.cui@gmail.com
+
+% =========================================================================
+% Input parameters and options
+% =========================================================================
+pname = 'data'; % path name
+direction = 5; % 0-7
+
+movingwin = [0.5 0.05];
+segave = 1;
+wintrig=[5*movingwin(1) 5*movingwin(1)];
+winseg=2*movingwin(1);
+
 params.Fs=1000; % sampling frequency
 params.fpass=[10 100]; % band of frequencies to be kept
-params. tapers=[3 5]; % taper parameters
+params.tapers=[3 5]; % taper parameters
 params.pad=2; % pad factor for fft
 params.err=[2 0.05];
 params.trialave=1;
-movingwin=[0.5 0.05];
-segave=1;
-direction=5;
 
-wintrig=[5*movingwin(1) 5*movingwin(1)];
-winseg=2*movingwin(1);
 %
 % Load data
 %
