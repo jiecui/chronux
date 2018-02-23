@@ -964,17 +964,16 @@ int (*f)(), d, n;
 double *ll, *ur, *res;
 {
   int i, j, nr;
-#ifdef WINDOWS
+#ifdef WIN
   mut_printf("Sorry, Monte-Carlo Integration not enabled.\n");
   for (i=0; i<n; i++) res[i] = 0.0;
 #else
   double z, x[MXIDIM], tres[MXRESULT];
 
-/* srand48(234L); */
-srand(234L);
+srand48(234L);
 
   for (i=0; i<n; i++)
-  { for (j=0; j<d; j++) x[j] = ll[j] + (ur[j]-ll[j])*rand();
+  { for (j=0; j<d; j++) x[j] = ll[j] + (ur[j]-ll[j])*drand48();
     nr = f(x,d,tres,NULL);
     if (i==0) setzero(res,nr);
     for (j=0; j<nr; j++) res[j] += tres[j];

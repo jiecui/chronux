@@ -1,5 +1,5 @@
-function [datac, datafit, Amps, freqs]=rmlinesmovingwinc(data, movingwin, tau, params, p, plt, f0)
-% RMLINESMOVINGWINC Fits significant sine waves to (continuous) data using overlapping windows.
+function [datac,datafit,Amps,freqs]=rmlinesmovingwinc(data,movingwin,tau,params,p,plt,f0)
+% fits significant sine waves to data (continuous data) using overlapping windows.
 %
 % Usage: [datac,datafit]=rmlinesmovingwinc(data,movingwin,tau,params,p,plt)
 %
@@ -60,91 +60,55 @@ function [datac, datafit, Amps, freqs]=rmlinesmovingwinc(data, movingwin, tau, p
 %  Outputs: 
 %       datafit        (fitted sine waves)
 %       datac          (cleaned up data)
+if nargin < 2; error('Need data and window parameters'); end;
+if nargin < 4 || isempty(params); params=[]; end; 
 
-% Last modified by Richard J. Cui.
-% $Revision: 0.1 $  $Date: Thu 02/12/2015 12:35:31.417 PM $
-%
-% Sensorimotor Research Group
-% School of Biological and Health System Engineering
-% Arizona State University
-% Tempe, AZ 25287, USA
-%
-% Email: richard.jie.cui@gmail.com
-
-% parse inputs
-if nargin < 2
-    error('Need data and window parameters'); 
-end
-
-if nargin < 4 || isempty(params)
-    params=[]; 
-end 
-
-if length(params.tapers) == 3 && movingwin(1) ~= params.tapers(2)
+if length(params.tapers)==3 & movingwin(1)~=params.tapers(2);
     error('Duration of data in params.tapers is inconsistent with movingwin(1), modify params.tapers(2) to proceed')
 end
 
-% [tapers, pad, Fs, fpass, err, trialave, params]=getparams(params); % set defaults for params
-% clear err trialave
-[tapers, ~, Fs, ~, ~, ~, params]=getparams(params); % set defaults for params
-
-if nargin < 6
-    plt='n';
-end
-
+[tapers,pad,Fs,fpass,err,trialave,params]=getparams(params); % set defaults for params
+clear err trialave
+if nargin < 6; plt='n'; end;
 %
 % Window,overlap and frequency information
 %
-data = change_row_to_column(data);
-[N, C] = size(data);
-Nwin = round(Fs*movingwin(1)); % number of samples in window
-Nstep = round(movingwin(2)*Fs); % number of samples to step through
-Noverlap = Nwin - Nstep; % number of points in overlap
+data=change_row_to_column(data);
+[N,C]=size(data);
+Nwin=round(Fs*movingwin(1)); % number of samples in window
+Nstep=round(movingwin(2)*Fs); % number of samples to step through
+Noverlap=Nwin-Nstep; % number of points in overlap
 %
 % Sigmoidal smoothing function
 %
-if nargin < 3 || isempty(tau)
-    tau=10; 
-end % smoothing parameter for sigmoidal overlap function
-
-x = (1:Noverlap)';
-smooth = 1./(1+exp(-tau.*(x-Noverlap/2)/Noverlap)); % sigmoidal function
-smooth = repmat(smooth,[1 C]);
+if nargin < 3 || isempty(tau); tau=10; end; % smoothing parameter for sigmoidal overlap function
+x=(1:Noverlap)';
+smooth=1./(1+exp(-tau.*(x-Noverlap/2)/Noverlap)); % sigmoidal function
+smooth=repmat(smooth,[1 C]);
 %
 % Start the loop
 %
-if nargin < 5 || isempty(p)
-    p=0.05/Nwin; 
-end % default for p value
-
-if nargin < 7 || isempty(f0)
-    f0=[]; 
-end % empty set default for f0 - uses F statistics to determine the frequencies
-
-% calculation
-params.tapers = dpsschk(tapers, Nwin, Fs); % check tapers
-winstart = 1:Nstep:N-Nwin+1;
-nw = length(winstart); 
-datafit = zeros(winstart(nw)+Nwin-1,C);
-Amps = cell(1,nw);
-freqs = cell(1,nw);
-for n = 1:nw;
+if nargin < 5 || isempty(p); p=0.05/Nwin; end % default for p value
+if nargin < 7 || isempty(f0); f0=[]; end; % empty set default for f0 - uses F statistics to determine the frequencies
+params.tapers=dpsschk(tapers,Nwin,Fs); % check tapers
+winstart=1:Nstep:N-Nwin+1;
+nw=length(winstart); 
+datafit=zeros(winstart(nw)+Nwin-1,C);
+Amps=cell(1,nw);
+freqs=cell(1,nw);
+for n=1:nw;
    indx=winstart(n):winstart(n)+Nwin-1;
    datawin=data(indx,:);
    [datafitwin,as,fs]=fitlinesc(datawin,params,p,'n',f0);
    Amps{n}=as;
    freqs{n}=fs;
    datafitwin0=datafitwin;
-   if n>1
-       datafitwin(1:Noverlap,:)=smooth.*datafitwin(1:Noverlap,:)+(1-smooth).*datafitwin0(Nwin-Noverlap+1:Nwin,:);
-   end
+   if n>1; datafitwin(1:Noverlap,:)=smooth.*datafitwin(1:Noverlap,:)+(1-smooth).*datafitwin0(Nwin-Noverlap+1:Nwin,:);end;
    datafit(indx,:)=datafitwin;
-end
+end;
 datac=data(1:size(datafit,1),:)-datafit;     
 if strcmp(plt,'y');
     [S,f]=mtspectrumsegc(data,movingwin(1),params);
     [Sc,fc]=mtspectrumsegc(datac,movingwin(1),params);
     plot(f,10*log10(S),fc,10*log10(Sc));
-end
-
-% [EOF]
+end;

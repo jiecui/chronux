@@ -49,8 +49,7 @@ function [Fval,A,f,sig,sd] = ftestc(data,params,p,plt)
 %       sd          (standard deviation of the amplitude C)
 if nargin < 1; error('Need data'); end;
 if nargin < 2 || isempty(params); params=[]; end;
-% [tapers,pad,Fs,fpass,err,trialave,params]=getparams(params);
-[tapers,pad,Fs,fpass, ~, ~,params]=getparams(params);
+[tapers,pad,Fs,fpass,err,trialave,params]=getparams(params);
 clear err trialave
 data=change_row_to_column(data);
 [N,C]=size(data);

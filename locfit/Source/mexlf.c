@@ -3,13 +3,13 @@
  *
  * starting a locfit interface.
  *
- * $Revision: 1.5 $ */
+/* $Revision: 1.5 $ */
 #include "mex.h"
 #include "lfev.h"
 
 design des;
 lfit lf;
-int le_error_mexlf;
+int lf_error;
 
 extern void lfmxdata(), lfmxsp(), lfmxevs();
 
@@ -24,7 +24,7 @@ mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])
 
     mut_redirect(mexPrintf);
     if (nrhs != 3) mexErrMsgTxt("mexlf requires 3 inputs.");
-    le_error_mexlf = 0;
+    lf_error = 0;
 
     lfit_alloc(&lf);
     lfit_init(&lf);
@@ -50,7 +50,7 @@ mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])
     lf.fp.kap = mxCalloc(lw[5],sizeof(double));
 /* should also allocate design here */
     
-    if (!le_error_mexlf) startmodule(&lf,&des,NULL,NULL);
+    if (!lf_error) startmodule(&lf,&des,NULL,NULL);
 
 /* now, store the results: 
    plhs[0] stores informtion about fit points and evaluation structure.

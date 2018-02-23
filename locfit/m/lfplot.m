@@ -89,7 +89,7 @@ if (d==2)
   x2 = xfit{2};
   yfit = reshape(yfit,length(x1),length(x2));
   if (type=='c')
-    [C, h] = contour(x1,x2,yfit',plotargs{:});
+    [C h] = contour(x1,x2,yfit',plotargs{:});
     clabel(C,h);
     if (showdata)
       hold on;

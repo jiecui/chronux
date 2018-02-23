@@ -8,11 +8,10 @@
 #include "lfev.h"
 
 extern void lfmxdata(), lfmxevs();
-extern void lfmxsp();   // rjc
 
 design des;
 lfit lf;
-int le_error_mexpp;
+int lf_error;
 
 void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])
 { int i, vc, nc, mvc, mg[MXDIM], where, m, wh, dir, nkap;
@@ -21,7 +20,7 @@ void mexFunction(int nlhs,mxArray *plhs[],int nrhs,const mxArray *prhs[])
   char band[16], wher[16], what[16], rest[16];
 
   if (nrhs<6) mexErrMsgTxt("ppmex requires 5 inputs.");
-  le_error_mexpp = 0;
+  lf_error = 0;
 
   mut_redirect(mexPrintf);
   dat= mxGetField(prhs[1],0,"data");
