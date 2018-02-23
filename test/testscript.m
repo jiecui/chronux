@@ -1,89 +1,78 @@
-% TESTSCRIPT
-%
+%% TESTSCRIPT
 % This script runs a sequence of analysis steps using the test data
 % contained in directory 'data'. The data consists of a single tetrode
-% recording from macaque area LIP during a memory saccade experiment
-% (Pesaran, B., Pezaris, J. S., Sahani, M., Mitra, P. P., & Andersen, R. A.
-% (2002). Temporal structure in neuronal activity during working memory in
-% macaque parietal cortex. Nature Neuroscience, 5(8), 805-811.). The data
-% are already separated into spikes and LFPs. LFPs are contained in
+% recording from macaque area LIP during a memory saccade experiment. The
+% data are already separated into spikes and LFPs. LFPs are contained in
 % variable 'dlfp'. Spikes from two neurons are in in a struct array 'dsp'.
 % Event information is in the following set of variables:
-%
-%   trialtimes  - start times of trials
-%   fixon       - fixation light comes on
-%   fixacq      - fixation acquired
-%   targon      - target light on
-%   targoff     - target light off
-%   fixoff      - fixation off
-%   saccade     - saccade
+% 
+% * |trialtimes| - start times of trials
+% * |fixon| - fixation light comes on
+% * |fixacq| - fixation acquired
+% * |targon| - target light on
+% * |targoff| - target light off
+% * |fixoff| - fixation off
+% * |saccade| - saccade
 %
 % Note that spikes and event times are in seconds and the sampling
-% frequency for the LFP in this experiment was 1kHz.
-%
-% Parameters: 
-%   pname       - path name on your computer where the data file LIPdata is
+% frequency for the LFP in this experiment was 1kHz. The following
+% parameters are involved in this script:
+% 
+% * |pname| - path name on your computer where the data file LIPdata is
 %                 stored.
-%   direction   - target direction to be analysed (0-7)
+% * |direction| - target direction to be analysed (0-7)
 %
 % The remaining parameters control various computations and are discussed
 % in chronux.m - type Help chronux.m - or chronux manual for more
 % information.
 % 
-%   movingwin   - moving window size for time-frequency analysis, [winsize,
+% * |movingwin| - moving window size for time-frequency analysis, [winsize,
 %                 winstep] in units consistent with Fs 
-%   segave      - 1: average over segment; 0: no average
-
-
-% Copyright 2018 Richard J. Cui. inital modified: Thu 02/22/2018 11:56:39.847 PM
-% $ Revision: 0.1 $  $ Date: Thu 02/22/2018 11:56:39.847 PM $
+% * |segave| - 1: average over segment; 0: no average
+% 
+% *References*
+% 
+% * Pesaran, B., Pezaris, J. S., Sahani, M., Mitra, P. P., & Andersen, R.
+% A. (2002). Temporal structure in neuronal activity during working memory
+% in macaque parietal cortex. Nature Neuroscience, 5(8), 805-811.
+% * Bokil, H., Andrews, P., Kulkarni, J. E., Mehta, S., & Mitra, P. P.
+% (2010). Chronux: A platform for analyzing neural signals. Journal of
+% Neuroscience Methods, 192(1), 146-151. doi:10.1016/j.jneumeth.2010.06.020
 %
-% 3236 E Chandler Blvd Unit 2036
-% Phoenix, AZ 85048, USA
-%
-% Email: richard.jie.cui@gmail.com
+% _Modified by Richard J. Cui (richard.jie.cui@gmail.com) on Fri 02/23/2018
+% 9:54:41.004 AM_
 
-% =========================================================================
-% Input parameters and options
-% =========================================================================
+%% Set parameters and options
 pname = 'data'; % path name
+fname = 'LIPdata.mat'; % data file name
 direction = 5; % 0-7
 
-movingwin = [0.5 0.05];
+movingwin = [0.5 0.05]; % winsize 500 ms, winstep 5 ms
 segave = 1;
-wintrig=[5*movingwin(1) 5*movingwin(1)];
-winseg=2*movingwin(1);
+wintrig = [5*movingwin(1) 5*movingwin(1)];
+winseg = 2*movingwin(1);
 
-params.Fs=1000; % sampling frequency
-params.fpass=[10 100]; % band of frequencies to be kept
-params.tapers=[3 5]; % taper parameters
-params.pad=2; % pad factor for fft
-params.err=[2 0.05];
-params.trialave=1;
+params.Fs = 1000; % sampling frequency
+params.fpass = [10 100]; % band of frequencies to be kept
+params.tapers = [3 5]; % taper parameters
+params.pad = 2; % pad factor for fft
+params.err = [2 0.05];
+params.trialave = 1;
 
-%
-% Load data
-%
-eval(['load LIPdata.mat']);
-% %
-% % Create rearranged data blocks for further analysis: We are going to
-% % extract segments of data centered on the target off times from the first channel of LFP data and the from one of the two spike trains
-% % 
-% %
-% indx1=find(targets==5);indx2=find(targets==1); % trials to preferred and antipreferred direction
-% E1=targon(indx1); E2=targon(indx2); % target on times trials to preferred adn anti-preferred directions
-% dlfp1=createdatamatc(dlfp(:,1),E1,Fs,wintrig);dlfp2=createdatamatc(dlfp(:,1),E2,Fs,wintrig); % extract event triggered segments of the first LFP channel
-% dsp1=createdatamatpt(dsp(1),E1,wintrig); dsp2=createdatamatpt(dsp(1),E2,wintrig); % the same for one of the spike trains
+%% Load data
+full_name = fullfile(pname,fname);
+load(full_name)
 
-% compute spectrum of the first few seconds of LFP channels 1-2
-NT=round(params.Fs*10*movingwin(1));
-data=dlfp(1:NT,:); data1=data(:,1:2);
-[S,f,Serr]=mtspectrumc(data1,params);
-figure;
-plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:))); xlabel('Frequency Hz'); ylabel('Spectrum');
-%%% pause
+%% Compute spectrum of the first few seconds of LFP channels 1-2
+NT = round(params.Fs*10*movingwin(1));
+data = dlfp(1:NT,:); 
+data1 = data(:,1:2);
+[S, f, Serr] = mtspectrumc(data1, params);
+figure
+plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:))); 
+xlabel('Frequency Hz'); ylabel('Spectrum');
 
-% compute derivative of the spectrum for the same data
+%% Compute derivative of the spectrum for the same data
 phi=[0 pi/2];
 [dS,f]=mtdspectrumc(data1,phi,params);
 figure;
