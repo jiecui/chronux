@@ -29,6 +29,8 @@
 % * |movingwin| - moving window size for time-frequency analysis, [winsize,
 %                 winstep] in units consistent with Fs 
 % * |segave| - 1: average over segment; 0: no average
+% * |wintrig|
+% * |winseg|
 % 
 % *References*
 % 
@@ -40,9 +42,11 @@
 % Neuroscience Methods, 192(1), 146-151. doi:10.1016/j.jneumeth.2010.06.020
 % * Mitra, P. P., & Pesaran, B. (1999). Analysis of dynamic brain imaging
 % data. Biophysical Journal, 76(2), 691-708.
+% * Mitra, P., & Bokil, H. (2008). Observed brain dynamics. New York:
+% Oxford University Press.
 %
-% _Modified by Richard J. Cui (richard.jie.cui@gmail.com) on Fri 02/23/2018
-% 9:54:41.004 AM_
+% _Modified by Richard J. Cui (richard.jie.cui@gmail.com) on Tue 02/27/2018
+% 11:05:02.021 PM_
 
 %% Set parameters and options
 pname = 'data'; % path name
@@ -56,7 +60,7 @@ winseg = 2*movingwin(1);
 
 params.Fs = 1000; % sampling frequency
 params.fpass = [10 100]; % band of frequencies to be kept
-params.tapers = [3 5]; % taper parameters
+params.tapers = [3 5]; % taper parameters; TW = 3
 params.pad = 2; % pad factor for fft
 params.err = [2 0.05];
 params.trialave = 1;
@@ -66,22 +70,37 @@ full_name = fullfile(pname,fname);
 load(full_name)
 
 %% Compute spectrum of the first few seconds of LFP channels 1-2
-NT = round(params.Fs*10*movingwin(1));
-data = dlfp(1:NT,:); 
-data1 = data(:,1:2);
-[S, f, Serr] = mtspectrumc(data1, params);
+NT = round(params.Fs*10*movingwin(1)); % number of points in 5 seconds data
+data = dlfp(1:NT,:); % samples x channels
+data1 = data(:,1:2); % only for channel 1-2
+%%
+% Fs = 1000 Hz; T = 5s, TW = 3, W (bandwidth) = 3/5 = .6 Hz;
+% Jackknife error bar with p-value = .05
+[S, f, Serr] = mtspectrumc(data1, params); % Multi-taper spectrum - continuous process
 figure
-plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:))); 
-xlabel('Frequency Hz'); ylabel('Spectrum');
+ph = plot(f,10*log10(Serr(1,:)), f,10*log10(Serr(2,:)), f, 10*log10(S));
+ph(1).Color = 'g';
+ph(2).Color = 'g';
+ph(3).Color = 'b';
+ph(3).LineWidth = 2;
+legend([ph(3), ph(1)], {'spectrum', 'CI'})
+title('Averaged power spectrum of Channel 1-2')
+xlabel('Frequency Hz')
+ylabel('Spectrum dB')
 
 %% Compute derivative of the spectrum for the same data
-phi=[0 pi/2];
-[dS,f]=mtdspectrumc(data1,phi,params);
-figure;
-plot(f,dS(1,:),f,dS(2,:)); xlabel('frequency Hz'); ylabel('Derivatives'); legend('Time','Frequency');
+% Mirta, 2008, pp.203-207
+phi = [0 pi/2];
+[dS, f] = mtdspectrumc(data1, phi, params);
+figure
+plot(f, dS(1,:), f, dS(2,:));
+xlabel('frequency Hz')
+ylabel('Derivatives')
+legend('Time','Frequency')
+title('Time and frequency derivatives of spectrum of Chaanel 1-2')
 
-% compute coherency between  channels 1-2 and  3-4
-data1=data(:,1:2);data2=data(:,3:4);
+%% compute coherency between channels 1-2 and  3-4
+data2=data(:,3:4); % only for channel 3-4
 [C,phi,S12,S1,S2,f,confC,phierr,Cerr]=coherencyc(data1,data2,params); 
 figure;plot(f,C,f,Cerr(1,:),f,Cerr(2,:));xlabel('frequency'); ylabel('Coherency');
 

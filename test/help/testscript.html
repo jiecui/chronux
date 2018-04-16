@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>TESTSCRIPT</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-02-23"><meta name="DC.source" content="testscript.m"><style type="text/css">
+      --><title>TESTSCRIPT</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-03-01"><meta name="DC.source" content="testscript.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>TESTSCRIPT</h1><!--introduction--><p>This script runs a sequence of analysis steps using the test data contained in directory 'data'. The data consists of a single tetrode recording from macaque area LIP during a memory saccade experiment. The data are already separated into spikes and LFPs. LFPs are contained in variable 'dlfp'. Spikes from two neurons are in in a struct array 'dsp'. Event information is in the following set of variables:</p><div><ul><li><tt>trialtimes</tt> - start times of trials</li><li><tt>fixon</tt> - fixation light comes on</li><li><tt>fixacq</tt> - fixation acquired</li><li><tt>targon</tt> - target light on</li><li><tt>targoff</tt> - target light off</li><li><tt>fixoff</tt> - fixation off</li><li><tt>saccade</tt> - saccade</li></ul></div><p>Note that spikes and event times are in seconds and the sampling frequency for the LFP in this experiment was 1kHz. The following parameters are involved in this script:</p><div><ul><li><tt>pname</tt> - path name on your computer where the data file LIPdata is                 stored.</li><li><tt>direction</tt> - target direction to be analysed (0-7)</li></ul></div><p>The remaining parameters control various computations and are discussed in chronux.m - type Help chronux.m - or chronux manual for more information.</p><div><ul><li><tt>movingwin</tt> - moving window size for time-frequency analysis, [winsize,                 winstep] in units consistent with Fs</li><li><tt>segave</tt> - 1: average over segment; 0: no average</li></ul></div><p><b>References</b></p><div><ul><li>Pesaran, B., Pezaris, J. S., Sahani, M., Mitra, P. P., &amp; Andersen, R. A. (2002). Temporal structure in neuronal activity during working memory in macaque parietal cortex. Nature Neuroscience, 5(8), 805-811.</li><li>Bokil, H., Andrews, P., Kulkarni, J. E., Mehta, S., &amp; Mitra, P. P. (2010). Chronux: A platform for analyzing neural signals. Journal of Neuroscience Methods, 192(1), 146-151. doi:10.1016/j.jneumeth.2010.06.020</li><li>Mitra, P. P., &amp; Pesaran, B. (1999). Analysis of dynamic brain imaging data. Biophysical Journal, 76(2), 691-708.</li></ul></div><p><i>Modified by Richard J. Cui (<a href="mailto:richard.jie.cui@gmail.com">richard.jie.cui@gmail.com</a>) on Fri 02/23/2018 9:54:41.004 AM</i></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Set parameters and options</a></li><li><a href="#2">Load data</a></li><li><a href="#3">Compute spectrum of the first few seconds of LFP channels 1-2</a></li><li><a href="#4">Compute derivative of the spectrum for the same data</a></li></ul></div><h2 id="1">Set parameters and options</h2><pre class="codeinput">pname = <span class="string">'data'</span>; <span class="comment">% path name</span>
+  </style></head><body><div class="content"><h1>TESTSCRIPT</h1><!--introduction--><p>This script runs a sequence of analysis steps using the test data contained in directory 'data'. The data consists of a single tetrode recording from macaque area LIP during a memory saccade experiment. The data are already separated into spikes and LFPs. LFPs are contained in variable 'dlfp'. Spikes from two neurons are in in a struct array 'dsp'. Event information is in the following set of variables:</p><div><ul><li><tt>trialtimes</tt> - start times of trials</li><li><tt>fixon</tt> - fixation light comes on</li><li><tt>fixacq</tt> - fixation acquired</li><li><tt>targon</tt> - target light on</li><li><tt>targoff</tt> - target light off</li><li><tt>fixoff</tt> - fixation off</li><li><tt>saccade</tt> - saccade</li></ul></div><p>Note that spikes and event times are in seconds and the sampling frequency for the LFP in this experiment was 1kHz. The following parameters are involved in this script:</p><div><ul><li><tt>pname</tt> - path name on your computer where the data file LIPdata is                 stored.</li><li><tt>direction</tt> - target direction to be analysed (0-7)</li></ul></div><p>The remaining parameters control various computations and are discussed in chronux.m - type Help chronux.m - or chronux manual for more information.</p><div><ul><li><tt>movingwin</tt> - moving window size for time-frequency analysis, [winsize,                 winstep] in units consistent with Fs</li><li><tt>segave</tt> - 1: average over segment; 0: no average</li><li><tt>wintrig</tt></li><li><tt>winseg</tt></li></ul></div><p><b>References</b></p><div><ul><li>Pesaran, B., Pezaris, J. S., Sahani, M., Mitra, P. P., &amp; Andersen, R. A. (2002). Temporal structure in neuronal activity during working memory in macaque parietal cortex. Nature Neuroscience, 5(8), 805-811.</li><li>Bokil, H., Andrews, P., Kulkarni, J. E., Mehta, S., &amp; Mitra, P. P. (2010). Chronux: A platform for analyzing neural signals. Journal of Neuroscience Methods, 192(1), 146-151. doi:10.1016/j.jneumeth.2010.06.020</li><li>Mitra, P. P., &amp; Pesaran, B. (1999). Analysis of dynamic brain imaging data. Biophysical Journal, 76(2), 691-708.</li><li>Mitra, P., &amp; Bokil, H. (2008). Observed brain dynamics. New York: Oxford University Press.</li></ul></div><p><i>Modified by Richard J. Cui (<a href="mailto:richard.jie.cui@gmail.com">richard.jie.cui@gmail.com</a>) on Tue 02/27/2018 11:05:02.021 PM</i></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Set parameters and options</a></li><li><a href="#2">Load data</a></li><li><a href="#3">Compute spectrum of the first few seconds of LFP channels 1-2</a></li><li><a href="#5">Compute derivative of the spectrum for the same data</a></li><li><a href="#6">compute coherency between channels 1-2 and  3-4</a></li></ul></div><h2 id="1">Set parameters and options</h2><pre class="codeinput">pname = <span class="string">'data'</span>; <span class="comment">% path name</span>
 fname = <span class="string">'LIPdata.mat'</span>; <span class="comment">% data file name</span>
 direction = 5; <span class="comment">% 0-7</span>
 
@@ -77,26 +77,35 @@ winseg = 2*movingwin(1);
 
 params.Fs = 1000; <span class="comment">% sampling frequency</span>
 params.fpass = [10 100]; <span class="comment">% band of frequencies to be kept</span>
-params.tapers = [3 5]; <span class="comment">% taper parameters</span>
+params.tapers = [3 5]; <span class="comment">% taper parameters; TW = 3</span>
 params.pad = 2; <span class="comment">% pad factor for fft</span>
 params.err = [2 0.05];
 params.trialave = 1;
 </pre><h2 id="2">Load data</h2><pre class="codeinput">full_name = fullfile(pname,fname);
 load(full_name)
-</pre><h2 id="3">Compute spectrum of the first few seconds of LFP channels 1-2</h2><pre class="codeinput">NT = round(params.Fs*10*movingwin(1));
-data = dlfp(1:NT,:);
-data1 = data(:,1:2);
-[S, f, Serr] = mtspectrumc(data1, params);
+</pre><h2 id="3">Compute spectrum of the first few seconds of LFP channels 1-2</h2><pre class="codeinput">NT = round(params.Fs*10*movingwin(1)); <span class="comment">% number of points in 5 seconds data</span>
+data = dlfp(1:NT,:); <span class="comment">% samples x channels</span>
+data1 = data(:,1:2); <span class="comment">% only for channel 1-2</span>
+</pre><p>Fs = 1000 Hz; T = 5s, TW = 3, W (bandwidth) = 3/5 = .6 Hz; Jackknife error bar with p-value = .05</p><pre class="codeinput">[S, f, Serr] = mtspectrumc(data1, params); <span class="comment">% Multi-taper spectrum - continuous process</span>
 figure
-plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:)));
-xlabel(<span class="string">'Frequency Hz'</span>); ylabel(<span class="string">'Spectrum'</span>);
-</pre><h2 id="4">Compute derivative of the spectrum for the same data</h2><pre class="codeinput">phi=[0 pi/2];
-[dS,f]=mtdspectrumc(data1,phi,params);
-figure;
-plot(f,dS(1,:),f,dS(2,:)); xlabel(<span class="string">'frequency Hz'</span>); ylabel(<span class="string">'Derivatives'</span>); legend(<span class="string">'Time'</span>,<span class="string">'Frequency'</span>);
-
-<span class="comment">% compute coherency between  channels 1-2 and  3-4</span>
-data1=data(:,1:2);data2=data(:,3:4);
+ph = plot(f,10*log10(Serr(1,:)), f,10*log10(Serr(2,:)), f, 10*log10(S));
+ph(1).Color = <span class="string">'g'</span>;
+ph(2).Color = <span class="string">'g'</span>;
+ph(3).Color = <span class="string">'b'</span>;
+ph(3).LineWidth = 2;
+legend([ph(3), ph(1)], {<span class="string">'spectrum'</span>, <span class="string">'CI'</span>})
+title(<span class="string">'Averaged power spectrum of Channel 1-2'</span>)
+xlabel(<span class="string">'Frequency Hz'</span>)
+ylabel(<span class="string">'Spectrum dB'</span>)
+</pre><h2 id="5">Compute derivative of the spectrum for the same data</h2><p>Mirta, 2008, pp.203-207</p><pre class="codeinput">phi = [0 pi/2];
+[dS, f] = mtdspectrumc(data1, phi, params);
+figure
+plot(f, dS(1,:), f, dS(2,:));
+xlabel(<span class="string">'frequency Hz'</span>)
+ylabel(<span class="string">'Derivatives'</span>)
+legend(<span class="string">'Time'</span>,<span class="string">'Frequency'</span>)
+title(<span class="string">'Time and frequency derivatives of spectrum of Chaanel 1-2'</span>)
+</pre><h2 id="6">compute coherency between channels 1-2 and  3-4</h2><pre class="codeinput">data2=data(:,3:4); <span class="comment">% only for channel 3-4</span>
 [C,phi,S12,S1,S2,f,confC,phierr,Cerr]=coherencyc(data1,data2,params);
 figure;plot(f,C,f,Cerr(1,:),f,Cerr(2,:));xlabel(<span class="string">'frequency'</span>); ylabel(<span class="string">'Coherency'</span>);
 
@@ -354,6 +363,8 @@ data2=dN; data2=data2(1:end,:);
 % * |movingwin| - moving window size for time-frequency analysis, [winsize,
 %                 winstep] in units consistent with Fs 
 % * |segave| - 1: average over segment; 0: no average
+% * |wintrig|
+% * |winseg|
 % 
 % *References*
 % 
@@ -365,9 +376,11 @@ data2=dN; data2=data2(1:end,:);
 % Neuroscience Methods, 192(1), 146-151. doi:10.1016/j.jneumeth.2010.06.020
 % * Mitra, P. P., & Pesaran, B. (1999). Analysis of dynamic brain imaging
 % data. Biophysical Journal, 76(2), 691-708.
+% * Mitra, P., & Bokil, H. (2008). Observed brain dynamics. New York:
+% Oxford University Press.
 %
-% _Modified by Richard J. Cui (richard.jie.cui@gmail.com) on Fri 02/23/2018
-% 9:54:41.004 AM_
+% _Modified by Richard J. Cui (richard.jie.cui@gmail.com) on Tue 02/27/2018
+% 11:05:02.021 PM_
 
 %% Set parameters and options
 pname = 'data'; % path name
@@ -381,7 +394,7 @@ winseg = 2*movingwin(1);
 
 params.Fs = 1000; % sampling frequency
 params.fpass = [10 100]; % band of frequencies to be kept
-params.tapers = [3 5]; % taper parameters
+params.tapers = [3 5]; % taper parameters; TW = 3
 params.pad = 2; % pad factor for fft
 params.err = [2 0.05];
 params.trialave = 1;
@@ -391,22 +404,37 @@ full_name = fullfile(pname,fname);
 load(full_name)
 
 %% Compute spectrum of the first few seconds of LFP channels 1-2
-NT = round(params.Fs*10*movingwin(1));
-data = dlfp(1:NT,:); 
-data1 = data(:,1:2);
-[S, f, Serr] = mtspectrumc(data1, params);
+NT = round(params.Fs*10*movingwin(1)); % number of points in 5 seconds data
+data = dlfp(1:NT,:); % samples x channels
+data1 = data(:,1:2); % only for channel 1-2
+%%
+% Fs = 1000 Hz; T = 5s, TW = 3, W (bandwidth) = 3/5 = .6 Hz;
+% Jackknife error bar with p-value = .05
+[S, f, Serr] = mtspectrumc(data1, params); % Multi-taper spectrum - continuous process
 figure
-plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:))); 
-xlabel('Frequency Hz'); ylabel('Spectrum');
+ph = plot(f,10*log10(Serr(1,:)), f,10*log10(Serr(2,:)), f, 10*log10(S));
+ph(1).Color = 'g';
+ph(2).Color = 'g';
+ph(3).Color = 'b';
+ph(3).LineWidth = 2;
+legend([ph(3), ph(1)], {'spectrum', 'CI'})
+title('Averaged power spectrum of Channel 1-2')
+xlabel('Frequency Hz')
+ylabel('Spectrum dB')
 
 %% Compute derivative of the spectrum for the same data
-phi=[0 pi/2];
-[dS,f]=mtdspectrumc(data1,phi,params);
-figure;
-plot(f,dS(1,:),f,dS(2,:)); xlabel('frequency Hz'); ylabel('Derivatives'); legend('Time','Frequency');
+% Mirta, 2008, pp.203-207
+phi = [0 pi/2];
+[dS, f] = mtdspectrumc(data1, phi, params);
+figure
+plot(f, dS(1,:), f, dS(2,:));
+xlabel('frequency Hz')
+ylabel('Derivatives')
+legend('Time','Frequency')
+title('Time and frequency derivatives of spectrum of Chaanel 1-2')
 
-% compute coherency between  channels 1-2 and  3-4
-data1=data(:,1:2);data2=data(:,3:4);
+%% compute coherency between channels 1-2 and  3-4
+data2=data(:,3:4); % only for channel 3-4
 [C,phi,S12,S1,S2,f,confC,phierr,Cerr]=coherencyc(data1,data2,params); 
 figure;plot(f,C,f,Cerr(1,:),f,Cerr(2,:));xlabel('frequency'); ylabel('Coherency');
 
