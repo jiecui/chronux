@@ -45,8 +45,8 @@
 % * Mitra, P., & Bokil, H. (2008). Observed brain dynamics. New York:
 % Oxford University Press.
 %
-% _Modified by Richard J. Cui (richard.jie.cui@gmail.com) on Tue 02/27/2018
-% 11:05:02.021 PM_
+% _Modified by Richard J. Cui (richard.jie.cui@gmail.com) on Fri 04/20/2018
+% 6:08:05.471 PM_
 
 %% Set parameters and options
 pname = 'data'; % path name
@@ -325,4 +325,3 @@ data1=dlfp(20000:30000,:); data1=data1(:,1:2);
 [dN,t]=binspikes(dsp,params.Fs,[20 30]); % extract spikes occurring between 20 and 30 seconds
 data2=dN; data2=data2(1:end,:);
 [C,phi,S12,S1,S2,t,f,zerosp,confC,phierr,Cerr]=cohgramcpb(data1,data2,movingwin,params,fscorr);
-
