@@ -1,402 +1,2016 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-                "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html>
-<head>
-  <title>Description of testscript</title>
-  <meta name="keywords" content="testscript">
-  <meta name="description" content="function testscript(pname,direction,movingwin,segave,params,fscorr)">
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
-  <meta name="robots" content="index, follow">
-  <link type="text/css" rel="stylesheet" href="../../m2html.css">
-  <script type="text/javascript">
-    if (top.frames.length == 0) { top.location = "../../index.html"; };
-  </script>
-</head>
-<body>
-<a name="_top"></a>
-<!-- ../menu.html chronux_2_10 --><!-- menu.html test -->
-<h1>testscript
-</h1>
 
-<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>function testscript(pname,direction,movingwin,segave,params,fscorr)</strong></div>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TESTSCRIPT</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-03-27"><meta name="DC.source" content="testscript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
-<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>This is a script file. </strong></div>
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
 
-<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"> function testscript(pname,direction,movingwin,segave,params,fscorr)
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
 
- This script runs a sequence of analysis steps using the test
- data contained in data. The data consists of a single tetrode
- recording from macaque area LIP during a memory saccade experiment
- a la Pesaran et al (2002). The data is already separated into
- spikes and LFPs. LFPs are contained in variable dlfp, spikes from two
- neurons are in in a struct array dsp, and event information is in
- the following set of variables:
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
 
- trialtimes - start times of trials
- fixon - fixation light comes on
- fixacq - fixation acquired
- targon - target light on
- targoff - target light off
- fixoff - fixation off
- saccade - saccade
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
 
- Note that spikes and event times are in seconds and the sampling
- frequency for the LFP in this experiment was 1kHz.
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
 
- the script takes the following input argument - 
- pname - path name on your computer where the data file LIPdata is stored.
- direction - target direction to be analysed (0-7)
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
 
- The remaining parameters control various computations and are discussed
- in chronux.m - type Help chronux.m for more information.
- 
- if nargin &lt; 4;
-     error('Need 6 input parameters - see help');
- end;
- if nargin &lt; 5 | isempty(params);
-    [tapers,pad,Fs,fpass,err,trialave,params]=getparams(params);
- end;
- if nargin &lt; 6 | isempty(fscorr);
-     fscorr=1;
- end;</pre></div>
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
 
-<!-- crossreference -->
-<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-This function calls:
-<ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="../../chronux_2_10/spectral_analysis/continuous/coherencyc.html" class="code" title="function [C,phi,S12,S1,S2,f,confC,phistd,Cerr]=coherencyc(data1,data2,params)">coherencyc</a>	Multi-taper coherency,cross-spectrum and individual spectra - continuous process</li><li><a href="../../chronux_2_10/spectral_analysis/continuous/coherencysegc.html" class="code" title="function [C,phi,S12,S1,S2,f,confC,phistd,Cerr]=coherencysegc(data1,data2,win,params)">coherencysegc</a>	Multi-taper coherency, cross-spectrum and individual spectra with segmenting - continuous process</li><li><a href="../../chronux_2_10/spectral_analysis/continuous/cohgramc.html" class="code" title="function [C,phi,S12,S1,S2,t,f,confC,phistd,Cerr]=cohgramc(data1,data2,movingwin,params)">cohgramc</a>	Multi-taper time-frequency coherence,cross-spectrum and individual spectra - continuous processes</li><li><a href="../../chronux_2_10/spectral_analysis/continuous/cohmatrixc.html" class="code" title="function [C,phi,S12,f,confC,phistd,Cerr]=cohmatrixc(data,params)">cohmatrixc</a>	Multi-taper coherency,cross-spectral matrix - continuous process</li><li><a href="../../chronux_2_10/spectral_analysis/continuous/mtdspecgramc.html" class="code" title="function [dS,t,f]=mtdspecgramc(data,movingwin,phi,params)">mtdspecgramc</a>	Multi-taper derivative of the time-frequency spectrum - continuous process</li><li><a href="../../chronux_2_10/spectral_analysis/continuous/mtdspectrumc.html" class="code" title="function [dS,f]=mtdspectrumc(data,phi,params)">mtdspectrumc</a>	Multi-taper frequency derivative of the spectrum - continuous process</li><li><a href="../../chronux_2_10/spectral_analysis/continuous/mtspecgramc.html" class="code" title="function [S,t,f,Serr]=mtspecgramc(data,movingwin,params)">mtspecgramc</a>	Multi-taper time-frequency spectrum - continuous process</li><li><a href="../../chronux_2_10/spectral_analysis/continuous/mtspecgramtrigc.html" class="code" title="function [S,t,f,Serr]=mtspecgramtrigc(data,E,win,movingwin,params)">mtspecgramtrigc</a>	Multi-taper event triggered time-frequency spectrum - continuous process</li><li><a href="../../chronux_2_10/spectral_analysis/continuous/mtspectrumc.html" class="code" title="function [S,f,Serr]=mtspectrumc(data,params)">mtspectrumc</a>	Multi-taper spectrum - continuous process</li><li><a href="../../chronux_2_10/spectral_analysis/continuous/mtspectrumsegc.html" class="code" title="function [S,f,varS,C,Serr]=mtspectrumsegc(data,win,params,segave)">mtspectrumsegc</a>	Multi-taper segmented spectrum for a univariate continuous process</li><li><a href="../../chronux_2_10/spectral_analysis/continuous/mtspectrumtrigc.html" class="code" title="function [S,f,Serr]=mtspectrumtrigc(data,E,win,params)">mtspectrumtrigc</a>	Multi-taper event triggered time-frequency spectrum - continuous process</li><li><a href="../../chronux_2_10/spectral_analysis/hybrid/coherencycpb.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencycpb(data1,data2,params,fscorr)">coherencycpb</a>	Multi-taper coherency,cross-spectrum and individual spectra - continuous and binned point process data</li><li><a href="../../chronux_2_10/spectral_analysis/hybrid/coherencycpt.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencycpt(data1,data2,params,fscorr,t)">coherencycpt</a>	Multi-taper coherency,cross-spectrum and individual spectra -continuous data and point process as times</li><li><a href="../../chronux_2_10/spectral_analysis/hybrid/coherencysegcpb.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegcpb(data1,data2,win,params,segave,fscorr)">coherencysegcpb</a>	Multi-taper coherency,cross-spectrum and individual spectra with segmenting</li><li><a href="../../chronux_2_10/spectral_analysis/hybrid/coherencysegcpt.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegcpt(data1,data2,win,params,segave,fscorr)">coherencysegcpt</a>	Multi-taper coherency,cross-spectrum and individual spectra computed by segmenting</li><li><a href="../../chronux_2_10/spectral_analysis/hybrid/cohgramcpb.html" class="code" title="function [C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgramcpb(data1,data2,movingwin,params,fscorr)">cohgramcpb</a>	Multi-taper time-frequency coherence,cross-spectrum and individual spectra</li><li><a href="../../chronux_2_10/spectral_analysis/hybrid/cohgramcpt.html" class="code" title="function [C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgramcpt(data1,data2,movingwin,params,fscorr)">cohgramcpt</a>	Multi-taper time-frequency coherence,cross-spectrum and individual spectra</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/coherencypb.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencypb(data1,data2,params,fscorr)">coherencypb</a>	Multi-taper coherency,cross-spectrum and individual spectra - binned point process</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/coherencysegpb.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegpb(data1,data2,win,params,segave,fscorr)">coherencysegpb</a>	Multi-taper coherency,cross-spectrum and individual spectra computed by segmenting</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/cohgrampb.html" class="code" title="function [C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgrampb(data1,data2,movingwin,params,fscorr)">cohgrampb</a>	Multi-taper time-frequency coherence,cross-spectrum and individual spectra - two binned point processes</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/cohmatrixpb.html" class="code" title="function [C,phi,S12,f,zerosp,confC,phistd,Cerr]=cohmatrixpb(data,params,fscorr)">cohmatrixpb</a>	Multi-taper coherency matrix - binned point process</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/mtdspecgrampb.html" class="code" title="function [dS,t,f]=mtdspecgrampb(data,movingwin,phi,params)">mtdspecgrampb</a>	Multi-taper derivatives of time-frequency spectrum - binned point process</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/mtdspectrumpb.html" class="code" title="function [dS,f]=mtdspectrumpb(data,phi,params)">mtdspectrumpb</a>	Multi-taper spectral derivative - binned point process</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/mtspecgrampb.html" class="code" title="function [S,t,f,R,Serr]=mtspecgrampb(data,movingwin,params,fscorr)">mtspecgrampb</a>	Multi-taper time-frequency spectrum - binned point process</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/mtspecgramtrigpb.html" class="code" title="function [S,t,f,R,Serr]=mtspecgramtrigpb(data,E,win,movingwin,params,fscorr)">mtspecgramtrigpb</a>	Multi-taper event triggered time-frequency spectrum - binned point process</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/mtspectrumpb.html" class="code" title="function [S,f,R,Serr]=mtspectrumpb(data,params,fscorr)">mtspectrumpb</a>	Multi-taper spectrum - binned point process</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/mtspectrumsegpb.html" class="code" title="function [S,f,R,varS,zerosp,C,Serr]=mtspectrumsegpb(data,win,params,segave,fscorr)">mtspectrumsegpb</a>	Multi-taper segmented spectrum for a univariate binned point process</li><li><a href="../../chronux_2_10/spectral_analysis/pointbinned/mtspectrumtrigpb.html" class="code" title="function [S,f,R,Serr]=mtspectrumtrigpb(data,E,win,params,fscorr)">mtspectrumtrigpb</a>	Multi-taper event triggered time-frequency spectrum - binned point process</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>	bin spikes at a specified frequency sampling i.e. sampling rate 1/sampling</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/coherencypt.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencypt(data1,data2,params,fscorr,t)">coherencypt</a>	Multi-taper coherency - point process times</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/coherencysegpt.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegpt(data1,data2,win,params,segave,fscorr)">coherencysegpt</a>	Multi-taper coherency computed by segmenting two univariate point processes into chunks</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/cohgrampt.html" class="code" title="function [C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgrampt(data1,data2,movingwin,params,fscorr)">cohgrampt</a>	Multi-taper time-frequency coherence - two point processes given as times</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/cohmatrixpt.html" class="code" title="function [C,phi,S12,f,zerosp,confC,phistd,Cerr]=cohmatrixpt(data,params,fscorr)">cohmatrixpt</a>	Multi-taper coherency matrix - point process times</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/createdatamatpt.html" class="code" title="function data=createdatamatpt(data,E,win)">createdatamatpt</a>	Helper function to create an event triggered matrix from a single</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/extractdatapt.html" class="code" title="function data=extractdatapt(data,t,offset)">extractdatapt</a>	Extract segements of spike times between t(1) and t(2)</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/mtdspecgrampt.html" class="code" title="function [dS,t,f]=mtdspecgrampt(data,movingwin,phi,params)">mtdspecgrampt</a>	Multi-taper derivative time-frequency spectrum - point process times</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/mtdspectrumpt.html" class="code" title="function [dS,f]=mtdspectrumpt(data,phi,params,t)">mtdspectrumpt</a>	Multi-taper spectral derivative - point process times</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/mtspecgrampt.html" class="code" title="function [S,t,f,R,Serr]=mtspecgrampt(data,movingwin,params,fscorr)">mtspecgrampt</a>	Multi-taper time-frequency spectrum - point process times</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/mtspecgramtrigpt.html" class="code" title="function [S,t,f,R,Serr]=mtspecgramtrigpt(data,E,win,movingwin,params,fscorr)">mtspecgramtrigpt</a>	Multi-taper event triggered time-frequency spectrum - point process times</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/mtspectrumpt.html" class="code" title="function [S,f,R,Serr]=mtspectrumpt(data,params,fscorr,t)">mtspectrumpt</a>	Multi-taper spectrum - point process times</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/mtspectrumsegpt.html" class="code" title="function [S,f,R,varS,zerosp,C,Serr]=mtspectrumsegpt(data,win,params,segave,fscorr)">mtspectrumsegpt</a>	Multi-taper segmented spectrum for a univariate binned point process</li><li><a href="../../chronux_2_10/spectral_analysis/pointtimes/mtspectrumtrigpt.html" class="code" title="function [S,f,R,Serr]=mtspectrumtrigpt(data,E,win,params,fscorr)">mtspectrumtrigpt</a>	Multi-taper time-frequency spectrum - point process times</li></ul>
-This function is called by:
-<ul style="list-style-image:url(../../matlabicon.gif)">
-</ul>
-<!-- crossreference -->
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
 
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <span class="comment">% function testscript(pname,direction,movingwin,segave,params,fscorr)</span>
-0002 <span class="comment">%</span>
-0003 <span class="comment">% This script runs a sequence of analysis steps using the test</span>
-0004 <span class="comment">% data contained in data. The data consists of a single tetrode</span>
-0005 <span class="comment">% recording from macaque area LIP during a memory saccade experiment</span>
-0006 <span class="comment">% a la Pesaran et al (2002). The data is already separated into</span>
-0007 <span class="comment">% spikes and LFPs. LFPs are contained in variable dlfp, spikes from two</span>
-0008 <span class="comment">% neurons are in in a struct array dsp, and event information is in</span>
-0009 <span class="comment">% the following set of variables:</span>
-0010 <span class="comment">%</span>
-0011 <span class="comment">% trialtimes - start times of trials</span>
-0012 <span class="comment">% fixon - fixation light comes on</span>
-0013 <span class="comment">% fixacq - fixation acquired</span>
-0014 <span class="comment">% targon - target light on</span>
-0015 <span class="comment">% targoff - target light off</span>
-0016 <span class="comment">% fixoff - fixation off</span>
-0017 <span class="comment">% saccade - saccade</span>
-0018 <span class="comment">%</span>
-0019 <span class="comment">% Note that spikes and event times are in seconds and the sampling</span>
-0020 <span class="comment">% frequency for the LFP in this experiment was 1kHz.</span>
-0021 <span class="comment">%</span>
-0022 <span class="comment">% the script takes the following input argument -</span>
-0023 <span class="comment">% pname - path name on your computer where the data file LIPdata is stored.</span>
-0024 <span class="comment">% direction - target direction to be analysed (0-7)</span>
-0025 <span class="comment">%</span>
-0026 <span class="comment">% The remaining parameters control various computations and are discussed</span>
-0027 <span class="comment">% in chronux.m - type Help chronux.m for more information.</span>
-0028 <span class="comment">%</span>
-0029 <span class="comment">% if nargin &lt; 4;</span>
-0030 <span class="comment">%     error('Need 6 input parameters - see help');</span>
-0031 <span class="comment">% end;</span>
-0032 <span class="comment">% if nargin &lt; 5 | isempty(params);</span>
-0033 <span class="comment">%    [tapers,pad,Fs,fpass,err,trialave,params]=getparams(params);</span>
-0034 <span class="comment">% end;</span>
-0035 <span class="comment">% if nargin &lt; 6 | isempty(fscorr);</span>
-0036 <span class="comment">%     fscorr=1;</span>
-0037 <span class="comment">% end;</span>
-0038 pname=<span class="string">'data'</span>;
-0039 params.Fs=1000; <span class="comment">% sampling frequency</span>
-0040 params.fpass=[10 100]; <span class="comment">% band of frequencies to be kept</span>
-0041 params. tapers=[3 5]; <span class="comment">% taper parameters</span>
-0042 params.pad=2; <span class="comment">% pad factor for fft</span>
-0043 params.err=[2 0.05];
-0044 params.trialave=1;
-0045 movingwin=[0.5 0.05];
-0046 segave=1;
-0047 direction=5;
-0048 
-0049 wintrig=[5*movingwin(1) 5*movingwin(1)];
-0050 winseg=2*movingwin(1);
-0051 <span class="comment">%</span>
-0052 <span class="comment">% Load data</span>
-0053 <span class="comment">%</span>
-0054 eval([<span class="string">'load LIPdata.mat'</span>]);
-0055 <span class="comment">% %</span>
-0056 <span class="comment">% % Create rearranged data blocks for further analysis: We are going to</span>
-0057 <span class="comment">% % extract segments of data centered on the target off times from the first channel of LFP data and the from one of the two spike trains</span>
-0058 <span class="comment">% %</span>
-0059 <span class="comment">% %</span>
-0060 <span class="comment">% indx1=find(targets==5);indx2=find(targets==1); % trials to preferred and antipreferred direction</span>
-0061 <span class="comment">% E1=targon(indx1); E2=targon(indx2); % target on times trials to preferred adn anti-preferred directions</span>
-0062 <span class="comment">% dlfp1=createdatamatc(dlfp(:,1),E1,Fs,wintrig);dlfp2=createdatamatc(dlfp(:,1),E2,Fs,wintrig); % extract event triggered segments of the first LFP channel</span>
-0063 <span class="comment">% dsp1=createdatamatpt(dsp(1),E1,wintrig); dsp2=createdatamatpt(dsp(1),E2,wintrig); % the same for one of the spike trains</span>
-0064 
-0065 <span class="comment">% compute spectrum of the first few seconds of LFP channels 1-2</span>
-0066 NT=round(params.Fs*10*movingwin(1));
-0067 data=dlfp(1:NT,:); data1=data(:,1:2);
-0068 [S,f,Serr]=<a href="../../chronux_2_10/spectral_analysis/continuous/mtspectrumc.html" class="code" title="function [S,f,Serr]=mtspectrumc(data,params)">mtspectrumc</a>(data1,params);
-0069 figure;
-0070 plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:))); xlabel(<span class="string">'Frequency Hz'</span>); ylabel(<span class="string">'Spectrum'</span>);
-0071 <span class="comment">%%% pause</span>
-0072 
-0073 <span class="comment">% compute derivative of the spectrum for the same data</span>
-0074 phi=[0 pi/2];
-0075 [dS,f]=<a href="../../chronux_2_10/spectral_analysis/continuous/mtdspectrumc.html" class="code" title="function [dS,f]=mtdspectrumc(data,phi,params)">mtdspectrumc</a>(data1,phi,params);
-0076 figure;
-0077 plot(f,dS(1,:),f,dS(2,:)); xlabel(<span class="string">'frequency Hz'</span>); ylabel(<span class="string">'Derivatives'</span>); legend(<span class="string">'Time'</span>,<span class="string">'Frequency'</span>);
-0078 <span class="comment">%%% pause</span>
-0079 
-0080 <span class="comment">% compute coherency between  channels 1-2 and  3-4</span>
-0081 data1=data(:,1:2);data2=data(:,3:4);
-0082 [C,phi,S12,S1,S2,f,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/continuous/coherencyc.html" class="code" title="function [C,phi,S12,S1,S2,f,confC,phistd,Cerr]=coherencyc(data1,data2,params)">coherencyc</a>(data1,data2,params); 
-0083 figure;plot(f,C,f,Cerr(1,:),f,Cerr(2,:));xlabel(<span class="string">'frequency'</span>); ylabel(<span class="string">'Coherency'</span>);
-0084 <span class="comment">%%% pause</span>
-0085 
-0086 <span class="comment">% coherency matrix of data1</span>
-0087 [C,phi,S12,f,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/continuous/cohmatrixc.html" class="code" title="function [C,phi,S12,f,confC,phistd,Cerr]=cohmatrixc(data,params)">cohmatrixc</a>(data1,params);
-0088 
-0089 <span class="comment">% compute spectrogram for 1-2</span>
-0090 [S,t,f,Serr]=<a href="../../chronux_2_10/spectral_analysis/continuous/mtspecgramc.html" class="code" title="function [S,t,f,Serr]=mtspecgramc(data,movingwin,params)">mtspecgramc</a>(data1,movingwin,params);
-0091 figure;imagesc(t,f,10*log10(S)'); axis xy; colorbar
-0092 <span class="comment">%%% pause</span>
-0093 
-0094 <span class="comment">% compute time-frequency derivative of the spectrogram for 1-2</span>
-0095 phi=[0 pi/2];
-0096 [dS,t,f]=<a href="../../chronux_2_10/spectral_analysis/continuous/mtdspecgramc.html" class="code" title="function [dS,t,f]=mtdspecgramc(data,movingwin,phi,params)">mtdspecgramc</a>(data1,movingwin,phi,params);
-0097 <span class="comment">% pause</span>
-0098 <span class="comment">% figure;subplot(211);imagesc(t,f,squeeze(dS(1,:,:))'); axis xy; colorbar;</span>
-0099 <span class="comment">% subplot(212);imagesc(t,f,squeeze(dS(2,:,:))'); axis xy; colorbar;</span>
-0100 <span class="comment">% %%% pause</span>
-0101 
-0102 <span class="comment">% compute coherogram between 1-2 and 3-4</span>
-0103 NT=round(movingwin(1)*Fs);
-0104 [C,phi,S12,S1,S2,t,f,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/continuous/cohgramc.html" class="code" title="function [C,phi,S12,S1,S2,t,f,confC,phistd,Cerr]=cohgramc(data1,data2,movingwin,params)">cohgramc</a>(data1,data2,movingwin,params);
-0105 figure;imagesc(t,f,C'); axis xy; colorbar;
-0106 <span class="comment">%%% pause</span>
-0107 
-0108 <span class="comment">% compute segmented spectrum of 1</span>
-0109 NT=10*round(winseg*Fs);
-0110 data1=dlfp(1:NT,1);
-0111 [S,f,varS,C,Serr]=<a href="../../chronux_2_10/spectral_analysis/continuous/mtspectrumsegc.html" class="code" title="function [S,f,varS,C,Serr]=mtspectrumsegc(data,win,params,segave)">mtspectrumsegc</a>(data1,winseg,params,segave);
-0112 figure; subplot(211);plot(f,10*log(S));
-0113 imagesc(f,f,C); axis xy;colorbar;
-0114 <span class="comment">%%% pause</span>
-0115 
-0116 <span class="comment">% compute segmented coherency between 1 and 2</span>
-0117 NT=10*round(winseg*Fs);
-0118 data1=dlfp(1:NT,1); data2=dlfp(1:NT,2);
-0119 [C,phi,S12,S1,S2,f,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/continuous/coherencysegc.html" class="code" title="function [C,phi,S12,S1,S2,f,confC,phistd,Cerr]=coherencysegc(data1,data2,win,params)">coherencysegc</a>(data1,data2,winseg,params);
-0120 figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1)); subplot(313);plot(f,10*log10(S2))
-0121 <span class="comment">%%% pause</span>
-0122 
-0123 <span class="comment">% compute spectrum of channel 1 triggered to events E</span>
-0124 E1=targon(find(targets==direction)); 
-0125 data1=dlfp(:,1); 
-0126 [S,f,Serr]=<a href="../../chronux_2_10/spectral_analysis/continuous/mtspectrumtrigc.html" class="code" title="function [S,f,Serr]=mtspectrumtrigc(data,E,win,params)">mtspectrumtrigc</a>(data1,E1,wintrig,params);
-0127 figure;plot(f,10*log10(S)'); axis xy; colorbar;
-0128 <span class="comment">%%% pause</span>
-0129 
-0130 <span class="comment">% compute spectrogram of channel 1 triggered to events E</span>
-0131 E1=targon(find(targets==direction)); 
-0132 data1=dlfp(:,1); 
-0133 [S,t,f,Serr]=<a href="../../chronux_2_10/spectral_analysis/continuous/mtspecgramtrigc.html" class="code" title="function [S,t,f,Serr]=mtspecgramtrigc(data,E,win,movingwin,params)">mtspecgramtrigc</a>(data1,E1,wintrig,movingwin,params);
-0134 figure; imagesc(t,f,10*log10(S)'); axis xy; colorbar;
-0135 <span class="comment">%%% pause</span>
-0136 
-0137 <span class="comment">%</span>
-0138 <span class="comment">% Analysis - point process stored as times</span>
-0139 <span class="comment">%</span>
-0140 
-0141 <span class="comment">% dsp contains 2 channels of spikes</span>
-0142 
-0143 data=<a href="../../chronux_2_10/spectral_analysis/pointtimes/extractdatapt.html" class="code" title="function data=extractdatapt(data,t,offset)">extractdatapt</a>(dsp,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds and compute their spectrum</span>
-0144 [S,f,R,Serr]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/mtspectrumpt.html" class="code" title="function [S,f,R,Serr]=mtspectrumpt(data,params,fscorr,t)">mtspectrumpt</a>(data,params);
-0145 figure; plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:)));line(get(gca,<span class="string">'xlim'</span>),[10*log10(R) 10*log10(R)]);
-0146 <span class="comment">%%% pause</span>
-0147 
-0148 <span class="comment">%</span>
-0149 <span class="comment">% Compute the derivative of the spectrum</span>
-0150 <span class="comment">%</span>
-0151 phi=[0 pi/2];
-0152 [dS,f]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/mtdspectrumpt.html" class="code" title="function [dS,f]=mtdspectrumpt(data,phi,params,t)">mtdspectrumpt</a>(data,phi,params);
-0153 figure; plot(f,dS);
-0154 <span class="comment">%%% pause</span>
-0155 
-0156 <span class="comment">%</span>
-0157 <span class="comment">% Compute the derivative of the time-frequency spectrum</span>
-0158 <span class="comment">%</span>
-0159 data=<a href="../../chronux_2_10/spectral_analysis/pointtimes/extractdatapt.html" class="code" title="function data=extractdatapt(data,t,offset)">extractdatapt</a>(dsp,[20 30]);
-0160 data1=data(1); data2=data(2);fscorr=[];t=[];
-0161 [C,phi,S12,S1,S2,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/coherencypt.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencypt(data1,data2,params,fscorr,t)">coherencypt</a>(data1,data2,params);
-0162 figure; plot(f,C);
-0163 <span class="comment">%%% pause</span>
-0164 
-0165 <span class="comment">%</span>
-0166 <span class="comment">% Compute event triggered average spectrum for one of the directions</span>
-0167 <span class="comment">%</span>
-0168 E1=targon(find(targets==direction));
-0169 data=dsp(1); 
-0170 [S,f,R,Serr]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/mtspectrumtrigpt.html" class="code" title="function [S,f,R,Serr]=mtspectrumtrigpt(data,E,win,params,fscorr)">mtspectrumtrigpt</a>(data,E1,wintrig,params);
-0171 figure;plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:))); line(get(gca,<span class="string">'xlim'</span>),[10*log10(R) 10*log10(R)]); 
-0172 <span class="comment">%%% pause</span>
-0173 
-0174 <span class="comment">%</span>
-0175 <span class="comment">% Compute the matrix of coherencies</span>
-0176 <span class="comment">%</span>
-0177 data=<a href="../../chronux_2_10/spectral_analysis/pointtimes/extractdatapt.html" class="code" title="function data=extractdatapt(data,t,offset)">extractdatapt</a>(dsp,[20 30]);
-0178 [C,phi,S12,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/cohmatrixpt.html" class="code" title="function [C,phi,S12,f,zerosp,confC,phistd,Cerr]=cohmatrixpt(data,params,fscorr)">cohmatrixpt</a>(data,params,fscorr);
-0179 
-0180 <span class="comment">%</span>
-0181 <span class="comment">% Event triggered spectrogram - first way way</span>
-0182 <span class="comment">%</span>
-0183 data=<a href="../../chronux_2_10/spectral_analysis/pointtimes/createdatamatpt.html" class="code" title="function data=createdatamatpt(data,E,win)">createdatamatpt</a>(dsp(1),E1,wintrig);
-0184 [S,t,f,R,Serr]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/mtspecgrampt.html" class="code" title="function [S,t,f,R,Serr]=mtspecgrampt(data,movingwin,params,fscorr)">mtspecgrampt</a>(data,movingwin,params);
-0185 figure;imagesc(t,f,10*log10(S)'); axis xy; colorbar;
-0186 <span class="comment">%%% pause</span>
-0187 
-0188 <span class="comment">%</span>
-0189 <span class="comment">% Derivative of the time-frequency spectrum</span>
-0190 <span class="comment">%</span>
-0191 data=<a href="../../chronux_2_10/spectral_analysis/pointtimes/createdatamatpt.html" class="code" title="function data=createdatamatpt(data,E,win)">createdatamatpt</a>(dsp(1),E1,wintrig);
-0192 phi=[0 pi/2];
-0193 [dS,t,f]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/mtdspecgrampt.html" class="code" title="function [dS,t,f]=mtdspecgrampt(data,movingwin,phi,params)">mtdspecgrampt</a>(data,movingwin,phi,params);
-0194 figure; subplot(211); imagesc(t,f,squeeze(dS(1,:,:))'); axis xy; colorbar;
-0195 subplot(212); imagesc(t,f,squeeze(dS(2,:,:))'); axis xy; colorbar;
-0196 
-0197 <span class="comment">%</span>
-0198 <span class="comment">% Coherogram between the two spike trains</span>
-0199 <span class="comment">%</span>
-0200 data1=<a href="../../chronux_2_10/spectral_analysis/pointtimes/createdatamatpt.html" class="code" title="function data=createdatamatpt(data,E,win)">createdatamatpt</a>(dsp(1),E1,wintrig);
-0201 data2=<a href="../../chronux_2_10/spectral_analysis/pointtimes/createdatamatpt.html" class="code" title="function data=createdatamatpt(data,E,win)">createdatamatpt</a>(dsp(2),E1,wintrig);
-0202 [C,phi,S12,S1,S2,t,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/cohgrampt.html" class="code" title="function [C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgrampt(data1,data2,movingwin,params,fscorr)">cohgrampt</a>(data1,data2,movingwin,params,fscorr);
-0203 figure;imagesc(t,f,C');axis xy; colorbar
-0204 <span class="comment">% %%% pause</span>
-0205 
-0206 <span class="comment">%</span>
-0207 <span class="comment">% Event Triggered spectrogram another way</span>
-0208 <span class="comment">%</span>
-0209 data=dsp(1);
-0210 [S,t,f,R,Serr]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/mtspecgramtrigpt.html" class="code" title="function [S,t,f,R,Serr]=mtspecgramtrigpt(data,E,win,movingwin,params,fscorr)">mtspecgramtrigpt</a>(data,E1,wintrig,movingwin,params);
-0211 imagesc(t,f,10*log10(S)'); axis xy; colorbar
-0212 <span class="comment">%</span>
-0213 <span class="comment">% Segmented spectrum</span>
-0214 <span class="comment">%</span>
-0215 data=<a href="../../chronux_2_10/spectral_analysis/pointtimes/extractdatapt.html" class="code" title="function data=extractdatapt(data,t,offset)">extractdatapt</a>(dsp,[20 30]);
-0216 data=data(1);
-0217 [S,f,R,varS]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/mtspectrumsegpt.html" class="code" title="function [S,f,R,varS,zerosp,C,Serr]=mtspectrumsegpt(data,win,params,segave,fscorr)">mtspectrumsegpt</a>(data,winseg,params);
-0218 plot(f,10*log10(S)); line(get(gca,<span class="string">'xlim'</span>),[10*log10(R) 10*log10(R)]);
-0219 <span class="comment">%</span>
-0220 <span class="comment">% Segmented coherency</span>
-0221 <span class="comment">%</span>
-0222 data=<a href="../../chronux_2_10/spectral_analysis/pointtimes/extractdatapt.html" class="code" title="function data=extractdatapt(data,t,offset)">extractdatapt</a>(dsp,[20 30]);
-0223 data1=data(1);data2=data(2);
-0224 [C,phi,S12,S1,S2,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/coherencysegpt.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegpt(data1,data2,win,params,segave,fscorr)">coherencysegpt</a>(data1,data2,winseg,params);
-0225 figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1));subplot(313); plot(f,10*log10(S2))
-0226 <span class="comment">%</span>
-0227 <span class="comment">% Analysis - hybrid: one continous and one point process stored as times</span>
-0228 <span class="comment">%</span>
-0229 offset=1;
-0230 data1=dlfp(20000:30000,1); data2=<a href="../../chronux_2_10/spectral_analysis/pointtimes/extractdatapt.html" class="code" title="function data=extractdatapt(data,t,offset)">extractdatapt</a>(dsp,[20 30],offset);data2=data2(1).times;
-0231 [C,phi,S12,S1,S2,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/hybrid/coherencycpt.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencycpt(data1,data2,params,fscorr,t)">coherencycpt</a>(data1,data2,params);
-0232 figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1));subplot(313); plot(f,10*log10(S2))
-0233 
-0234 
-0235 data1=dlfp(20000:30000,1); data2=<a href="../../chronux_2_10/spectral_analysis/pointtimes/extractdatapt.html" class="code" title="function data=extractdatapt(data,t,offset)">extractdatapt</a>(dsp,[20 30],offset);data2=data2(1).times;
-0236 [C,phi,S12,S1,S2,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/hybrid/coherencysegcpt.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegcpt(data1,data2,win,params,segave,fscorr)">coherencysegcpt</a>(data1,data2,winseg,params,segave,fscorr);
-0237 figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1));subplot(313); plot(f,10*log10(S2))
-0238 
-0239 
-0240 data1=dlfp(20000:30000,1); data2=<a href="../../chronux_2_10/spectral_analysis/pointtimes/extractdatapt.html" class="code" title="function data=extractdatapt(data,t,offset)">extractdatapt</a>(dsp,[20 30],offset);data2=data2(1).times;
-0241 [C,phi,S12,S1,S2,t,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/hybrid/cohgramcpt.html" class="code" title="function [C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgramcpt(data1,data2,movingwin,params,fscorr)">cohgramcpt</a>(data1,data2,movingwin,params,fscorr);
-0242 figure; subplot(311); imagesc(t,f,C');axis xy; colorbar; subplot(312);imagesc(t,f,10*log10(S1)');axis xy; colorbar; subplot(313); imagesc(t,f,10*log10(S2)');axis xy; colorbar
-0243 
-0244 
-0245 <span class="comment">%  Analysis: Binned spike counts</span>
-0246 
-0247 [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
-0248 
-0249 data=dN;
-0250 [S,f,R,Serr]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/mtspectrumpb.html" class="code" title="function [S,f,R,Serr]=mtspectrumpb(data,params,fscorr)">mtspectrumpb</a>(data,params);
-0251 plot(f,10*log10(S),f,10*log10(Serr(1,:)), f,10*log10(Serr(2,:))); <span class="comment">%line(get(gca,'xlim'),[10*log10(R) 10*log10(R)]);</span>
-0252 
-0253 data=dN;
-0254 phi=[0 pi/2];
-0255 [dS,f]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/mtdspectrumpb.html" class="code" title="function [dS,f]=mtdspectrumpb(data,phi,params)">mtdspectrumpb</a>(data,phi,params);
-0256 figure; plot(f,dS); 
-0257 
-0258 data=dN;
-0259 data1=data(:,1); data2=data(:,2);fscorr=[];t=[];
-0260 [C,phi,S12,S1,S2,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/coherencypb.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencypb(data1,data2,params,fscorr)">coherencypb</a>(data1,data2,params);
-0261 figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1)); subplot(313); plot(f,10*log10(S2));
-0262 
-0263 E=targon(find(targets==direction)); E=E(find(E&gt;20 &amp; E&lt;450)); [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs,[20 500]);data=dN(:,1);
-0264 [S,f,R,Serr]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/mtspectrumtrigpb.html" class="code" title="function [S,f,R,Serr]=mtspectrumtrigpb(data,E,win,params,fscorr)">mtspectrumtrigpb</a>(data,E,wintrig,params);
-0265 figure;plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:)));
-0266 
-0267 [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
-0268 data=dN;
-0269 [C,phi,S12,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/cohmatrixpb.html" class="code" title="function [C,phi,S12,f,zerosp,confC,phistd,Cerr]=cohmatrixpb(data,params,fscorr)">cohmatrixpb</a>(data,params,fscorr);
-0270 
-0271 [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
-0272 data=dN;
-0273 [S,t,f,R,Serr]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/mtspecgrampb.html" class="code" title="function [S,t,f,R,Serr]=mtspecgrampb(data,movingwin,params,fscorr)">mtspecgrampb</a>(data,movingwin,params);
-0274 figure;imagesc(t,f,10*log10(S)'); axis xy; colorbar
-0275 
-0276 clear R Serr Cerr S C phierr dN dS data1 data2
-0277 
-0278 [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
-0279 data=dN;
-0280 phi=[0 pi/2];
-0281 [dS,t,f]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/mtdspecgrampb.html" class="code" title="function [dS,t,f]=mtdspecgrampb(data,movingwin,phi,params)">mtdspecgrampb</a>(data,movingwin,phi,params);
-0282 
-0283 [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
-0284 data=dN;
-0285 data1=data(:,1); data2=data(:,2);
-0286 [C,phi,S12,S1,S2,t,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/cohgrampb.html" class="code" title="function [C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgrampb(data1,data2,movingwin,params,fscorr)">cohgrampb</a>(data1,data2,movingwin,params,fscorr);
-0287 
-0288 [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs); <span class="comment">% extract spikes</span>
-0289 dN=dN(:,1);
-0290 E=E(1:6);
-0291 data=dN;
-0292 [S,t,f,R,Serr]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/mtspecgramtrigpb.html" class="code" title="function [S,t,f,R,Serr]=mtspecgramtrigpb(data,E,win,movingwin,params,fscorr)">mtspecgramtrigpb</a>(data,E,wintrig,movingwin,params);
-0293 
-0294 [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
-0295 data=dN;
-0296 data=data(:,1);
-0297 [S,f,R,varS]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/mtspectrumsegpb.html" class="code" title="function [S,f,R,varS,zerosp,C,Serr]=mtspectrumsegpb(data,win,params,segave,fscorr)">mtspectrumsegpb</a>(data,winseg,params,segave,fscorr);
-0298 figure; plot(f,10*log10(S)); line(get(gca,<span class="string">'xlim'</span>),10*log10([R R])); 
-0299 
-0300 [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
-0301 data=dN;
-0302 data1=data(:,1);data2=data(:,2);
-0303 [C,phi,S12,S1,S2,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/pointbinned/coherencysegpb.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegpb(data1,data2,win,params,segave,fscorr)">coherencysegpb</a>(data1,data2,winseg,params);
-0304 
-0305 <span class="comment">%</span>
-0306 <span class="comment">% Analysis - hybrid: one continous and one point process stored as counts</span>
-0307 <span class="comment">%</span>
-0308 data1=dlfp(20000:30000,:);data1=data1(:,1:2); [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
-0309 data2=dN; data2=data2(1:<span class="keyword">end</span>,:);
-0310 [C,phi,S12,S1,S2,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/hybrid/coherencycpb.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencycpb(data1,data2,params,fscorr)">coherencycpb</a>(data1,data2,params);
-0311 
-0312 data1=data1(:,1); data2=data2(:,1);
-0313 [C,phi,S12,S1,S2,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/hybrid/coherencysegcpb.html" class="code" title="function [C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegcpb(data1,data2,win,params,segave,fscorr)">coherencysegcpb</a>(data1,data2,winseg,params,segave,fscorr);
-0314 
-0315 
-0316 data1=dlfp(20000:30000,:); data1=data1(:,1:2);
-0317 [dN,t]=<a href="../../chronux_2_10/spectral_analysis/pointtimes/binspikes.html" class="code" title="function [dN,t]=binspikes(data,Fs,t)">binspikes</a>(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
-0318 data2=dN; data2=data2(1:<span class="keyword">end</span>,:);
-0319 [C,phi,S12,S1,S2,t,f,zerosp,confC,phierr,Cerr]=<a href="../../chronux_2_10/spectral_analysis/hybrid/cohgramcpb.html" class="code" title="function [C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgramcpb(data1,data2,movingwin,params,fscorr)">cohgramcpb</a>(data1,data2,movingwin,params,fscorr);
-0320</pre></div>
-<hr><address>Generated on Fri 12-Aug-2011 11:36:15 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
-</body>
-</html>
+
+
+  </style></head><body><div class="content"><h1>TESTSCRIPT</h1><!--introduction--><p>Script for testing Chronux package</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Introduction</a></li><li><a href="#2">Global parameters and options</a></li><li><a href="#3">Data loading</a></li><li><a href="#4">Analysis of Continous Process (Local Field Potentials, LFPs)</a></li><li><a href="#11">Analysis of Point Process (Spike Trains)</a></li><li><a href="#18">Analysis of Hybrid Process (LFP and Spike Trains)</a></li><li><a href="#29">References</a></li></ul></div><h2 id="1">Introduction</h2><p>This script runs a sequence of analysis steps using the test data contained in directory 'data'. The data consists of a single tetrode recording from macaque area LIP during a memory saccade experiment. The data are already separated into spikes and LFPs. LFPs are contained in variable 'dlfp'. Spikes from two neurons are in a struct array 'dsp'.</p><p><b>Event information</b> is in the following set of variables:</p><div><ul><li><tt>trialtimes</tt>    - start times of trials</li><li><tt>fixon</tt>         - fixation light comes on</li><li><tt>fixacq</tt>        - fixation acquired</li><li><tt>targon</tt>        - target light on</li><li><tt>targoff</tt>       - target light off</li><li><tt>fixoff</tt>        - fixation light comes off</li><li><tt>saccade</tt>       - saccade</li></ul></div><p>Note that spikes and event times are in seconds and the sampling frequency for the LFP in this experiment was 1kHz. The following <b>parameters</b> are involved in this script:</p><div><ul><li><tt>pname</tt>         - path name on your computer where the data file                     LIPdata is stored.</li><li><tt>direction</tt>     - target direction to be analysed (0-7)</li></ul></div><p>The remaining <b>parameters</b> control various computations and are discussed in chronux.m - type Help chronux.m or refer to chronux manual for more information.</p><div><ul><li><tt>movingwin</tt>     - moving window size for time-frequency analysis,                     [winsize, winstep] in units consistent with Fs                     (sampling frequency)</li><li><tt>segave</tt>        - whether to average over segments (1: average over                     segment; 0: no average)</li><li><tt>wintrig</tt>       - window size around the trigger event,                     [winsize_left, winsize_right] in units consistent                     with Fs</li><li><tt>winseg</tt>        - window size of a segment in units consistent with Fs</li></ul></div><h2 id="2">Global parameters and options</h2><pre class="codeinput"><span class="comment">% clear all</span>
+clearvars
+
+<span class="comment">% data location</span>
+pname   = <span class="string">'data'</span>;           <span class="comment">% path name</span>
+fname   = <span class="string">'LIPdata.mat'</span>;    <span class="comment">% data file name</span>
+
+<span class="comment">% analysis parameters and options</span>
+Fs          = 1000;     <span class="comment">% sampling frequency in Hz</span>
+direction   = 5;        <span class="comment">% 0-7</span>
+
+movingwin   = [0.5 0.05];   <span class="comment">% winsize 500 ms, winstep 50 ms (overlap 90%)</span>
+segave      = 1;            <span class="comment">% average over segments</span>
+wintrig     = 5*movingwin(1)*ones(2, 1);    <span class="comment">% 2500 ms for both left and right</span>
+winseg      = 10*movingwin(1);  <span class="comment">% segment size = 5 second</span>
+
+params.Fs   = Fs;   <span class="comment">% sampling frequency</span>
+params.fpass    = [10 100]; <span class="comment">% band of frequencies to be kept</span>
+params.tapers   = [3 5];    <span class="comment">% taper parameters; TW = 3</span>
+params.pad  = 2;    <span class="comment">% pad factor for fft to decide the number of points</span>
+params.err  = [2 0.05]; <span class="comment">% 2 = jacknife error bar, p = 0.05</span>
+params.trialave = 1;    <span class="comment">% overage over 2nd dimension (trials or channels)</span>
+</pre><h2 id="3">Data loading</h2><pre class="codeinput">full_name = fullfile(pname,fname);
+load(full_name, <span class="string">'dlfp'</span>, <span class="string">'dsp'</span>, <span class="string">'targets'</span>, <span class="string">'targon'</span>)
+</pre><h2 id="4">Analysis of Continous Process (Local Field Potentials, LFPs)</h2><p><b>Frequency domain analysis</b></p><div><ul><li>Spectrum estimation</li></ul></div><p><i>Spectrum of the first 5 seconds of LFP channels 1-2</i></p><p>In this analysis we set sampling rate Fs = 1000 Hz, window size T = 5s, TW = 3, so that the half-bandwidth W = 3/5 = 0.6 Hz, which results in the frequency resolution of 2 x W = 1.2 Hz.  To get error bar we use Jackknife method with p-value = 0.05.</p><pre class="codeinput"><span class="comment">% get the data and local options</span>
+NT = round(Fs*winseg); <span class="comment">% number of points in 5 seconds data</span>
+data = dlfp(1:NT,:); <span class="comment">% samples x channels of 1st 5 seconds</span>
+data1 = data(:,1:2); <span class="comment">% only for channel 1-2</span>
+
+<span class="comment">% do the calculation</span>
+[S_noseg, f, Serr] = mtspectrumc(data1, params);
+
+<span class="comment">% plot the results</span>
+figure
+ph = plot(f,10*log10(Serr(1,:)), f, 10*log10(Serr(2,:)), f, 10*log10(S_noseg));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'g'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'g'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'b'</span>, <span class="string">'LineWidth'</span>, 2);
+legend([ph(3), ph(1)], {<span class="string">'spectrum'</span>, <span class="string">'C-Interval'</span>})
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Averaged power spectrum of Channel 1&amp;2'</span>)
+</pre><p><i>Derivative of the spectrum ([4] Mirta, 2008, pp.203-207)</i></p><pre class="codeinput"><span class="comment">% get the data and local options</span>
+NT = round(Fs*winseg); <span class="comment">% number of points in 5 seconds data</span>
+data = dlfp(1:NT,:); <span class="comment">% samples x channels of 1st 5 seconds</span>
+data1 = data(:,1:2); <span class="comment">% only for channel 1-2</span>
+phi = [0 pi/2];
+
+<span class="comment">% do the calculation</span>
+[dS, f] = mtdspectrumc(data1, phi, params);
+
+<span class="comment">% present the results</span>
+figure
+plot(f, dS(1,:), f, dS(2,:));
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Derivatives'</span>)
+legend(<span class="string">'Time'</span>,<span class="string">'Frequency'</span>)
+title(<span class="string">'Time and frequency derivatives of spectrum of Channels 1-2'</span>)
+</pre><p><i>Spectrum of channel 1 triggered by events E</i></p><pre class="codeinput"><span class="comment">% get the data and local options</span>
+E = targon(targets == direction);
+data1 = dlfp(:,1);
+
+<span class="comment">% do the calculation</span>
+[S_noseg, f, Serr] = mtspectrumtrigc(data1, E, wintrig, params);
+
+<span class="comment">% plot the results</span>
+ph = plot(f,10*log10(Serr(1,:)), f, 10*log10(Serr(2,:)), f, 10*log10(S_noseg));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'g'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'g'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'b'</span>, <span class="string">'LineWidth'</span>, 2);
+legend([ph(3), ph(1)], {<span class="string">'spectrum'</span>, <span class="string">'C-Interval'</span>})
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Event triggered power spectrum of Channel 1'</span>)
+</pre><p><i>Segmented spectrum of channel 1&amp;2</i></p><p>We segment a 50-second signal into 10 5-second segments and then average the spectrum.</p><pre class="codeinput"><span class="comment">% get the data and local options</span>
+NT = 10*round(winseg*Fs); <span class="comment">% number of samples in 50 second window segment</span>
+data1 = dlfp(1:NT, 1);
+
+<span class="comment">% do the calculation</span>
+[S, f, varS, C, Serr] = mtspectrumsegc(data1, winseg, params, segave);
+
+<span class="comment">% plot the results</span>
+figure
+ph = plot(f, pow2db(S_noseg), f, pow2db(S));
+set(ph(2), <span class="string">'LineWidth'</span>, 2)
+grid <span class="string">on</span>
+legend(<span class="string">'non-seg'</span>, <span class="string">'seg-smoothed'</span>)
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Comparison of averaged power spectrum of Channel 1-2'</span>)
+
+figure
+subplot(2, 1, 1)
+ph = plot(f, pow2db(S), f, pow2db(Serr(1, :)), f, pow2db(Serr(2, :)));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Segment averaged power spectrum of Channel 1-2'</span>)
+
+subplot(2, 1, 2)
+plot(f, varS)
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Variance'</span>)
+title(<span class="string">'Variance of the log spectrum'</span>)
+
+figure
+imagesc(f,f,C)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar(<span class="string">'northoutside'</span>)
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Covarance matrix of log spectrum'</span>)
+</pre><div><ul><li>Coherency estimation</li></ul></div><p><i>Coherency matrix between channels 1 and 2</i></p><pre class="codeinput"><span class="comment">% get the data and local options</span>
+NT = round(winseg*Fs); <span class="comment">% number of samples in 5 second window segment</span>
+data1 = dlfp(1:NT, 1:2);
+
+<span class="comment">% do the calculation</span>
+[C_noseg, phi, S12, f, confC, phistd, Cerr] = cohmatrixc(data1, params);
+
+<span class="comment">% display the results</span>
+fprintf(<span class="string">'Confidence level between channel 1 and 2 at %0.2f%% leve is %0.2f.\n'</span>,<span class="keyword">...</span>
+    1-params.err(2), confC(1, 2))
+
+<span class="comment">% plot the results</span>
+figure
+subplot(2, 1, 1)
+plot(f, pow2db(abs(S12(:, 1, 2))))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Cross spectrum between Channel 1 &amp; 2'</span>)
+
+subplot(2, 1, 2)
+plot(f, angle(S12(:, 1, 2)))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Phase'</span>)
+
+figure
+subplot(2, 1, 1)
+ph = plot(f, C_noseg(:, 1, 2), f, Cerr(1, :, 1, 2), f, Cerr(2, :, 1, 2));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Coherence'</span>)
+title(<span class="string">'Coherence between Channel 1 and 2'</span>)
+
+subplot(2, 1, 2)
+ph = plot(f, phi(:, 1, 2), f, phi(:, 1, 2)-phistd(1, :, 1, 2).',<span class="keyword">...</span>
+    f, phi(:, 1, 2)+phistd(2, :, 1, 2).');
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Phase'</span>)
+</pre><p><i>Segmented coherency between channels 1 and channels 2</i></p><pre class="codeinput"><span class="comment">% get the data and local options</span>
+NT = 10*round(winseg*Fs); <span class="comment">% number of samples in 50 second window segment</span>
+data1 = dlfp(1:NT, 1);
+data2 = dlfp(1:NT, 2);
+
+<span class="comment">% do the calculation</span>
+[C, phi, S12, S1, S2, f, confC, phistd, Cerr] = coherencysegc(data1, data2,<span class="keyword">...</span>
+    winseg, params);
+
+<span class="comment">% display the results</span>
+fprintf(<span class="string">'Segment averaged confidence level between channel 1 and 2 at %0.2f%% leve is %0.2f.\n'</span>,<span class="keyword">...</span>
+    1-params.err(2), confC)
+
+<span class="comment">% plot the results</span>
+figure
+ph = plot(f, C_noseg(:, 1, 2), f, C);
+ylim([.9 1])
+set(ph(2), <span class="string">'LineWidth'</span>, 2)
+legend(<span class="string">'no-seg'</span>, <span class="string">'seg-smoothed'</span>)
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Coherence'</span>)
+title(<span class="string">'Comparison segmented average coherence between channels 1 and 2'</span>)
+
+figure
+subplot(2, 1, 1)
+ph = plot(f, C, f, Cerr(1, :), f, Cerr(2, :));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Coherence'</span>)
+title(<span class="string">'Segmented average coherence between channels 1 and 2'</span>)
+
+subplot(2, 1, 2)
+ph = plot(f, phi, f, phi-phistd, f, phi+phistd);
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Phase'</span>)
+
+figure
+subplot(3, 1, 1)
+plot(f, pow2db(abs(S12)))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Segment averaged cross power spectrum between channels 1 and 2'</span>)
+
+subplot(3, 1, 2)
+plot(f,10*log10(S1))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Segment averaged power spectrum of channels 1'</span>)
+
+subplot(3, 1, 3)
+plot(f,10*log10(S2))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Segment averaged power spectrum of channels 2'</span>)
+</pre><p><i>Coherency between channels 1-2 and 3-4</i></p><p>Here the two channels in each group are treated as two trials</p><pre class="codeinput"><span class="comment">% get the data and local options</span>
+NT      = round(Fs*winseg); <span class="comment">% number of points in 5 seconds data</span>
+data    = dlfp(1:NT,:); <span class="comment">% samples x channels of 1st 5 seconds</span>
+data1   = data(:, 1:2); <span class="comment">% only for channel 1-2</span>
+data2   = data(:, 3:4); <span class="comment">% only for channel 3-4</span>
+
+<span class="comment">% do the calculation</span>
+[C, phi, S12, S1, S2, f, confC, phistd, Cerr] = coherencyc(data1, data2, params);
+
+<span class="comment">% display the results</span>
+fprintf(<span class="string">'Confidence level between channel 1&amp;2 and 3&amp;4 at %0.2f%% leve is %0.2f.\n'</span>,<span class="keyword">...</span>
+    1-params.err(2), confC)
+
+<span class="comment">% plot the results</span>
+figure
+subplot(2, 1, 1)
+plot(f, pow2db(abs(S12)))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Cross spectrum between Channel 1-2 and 3-4'</span>)
+
+subplot(2, 1, 2)
+plot(f, angle(S12))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Phase'</span>)
+
+figure
+subplot(2, 1, 1)
+plot(f, pow2db(S1))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Spectrum of Channel 1-2'</span>)
+
+subplot(2, 1, 2)
+plot(f, pow2db(S2))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Spectrum of Channel 3-4'</span>)
+
+figure
+subplot(2, 1, 1)
+ph = plot(f, C, f, Cerr(1,:), f, Cerr(2,:));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+xlabel(<span class="string">'frequency (Hz)'</span>)
+ylabel(<span class="string">'Coherency'</span>);
+title(<span class="string">'Coherence between Channels 1-2 and 3-4'</span>)
+
+subplot(2, 1, 2)
+ph = plot(f, phi, f, phi-phistd, f, phi+phistd);
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Phase'</span>)
+</pre><h2 id="11">Analysis of Point Process (Spike Trains)</h2><p><b>Frequency domain analysis</b></p><div><ul><li>Spectrum estimation</li></ul></div><p><i>Spectrum of spike trains</i></p><pre class="codeinput"><span class="comment">% dsp contains 2 channels of spikes;</span>
+<span class="comment">% extract spikes occurring between 20 and 30 seconds and compute their spectrum</span>
+cell12 = extractdatapt(dsp, [20 30]);
+
+[S, f, R, Serr] = mtspectrumpt(cell12, params);
+
+<span class="comment">% plot the results</span>
+figure
+ph = plot(f, 10*log10(S), f, 10*log10(Serr(1,:)), f, 10*log10(Serr(2,:)));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'y'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'y'</span>, <span class="string">'LineWidth'</span>, .5);
+line(get(gca,<span class="string">'xlim'</span>),[10*log10(R) 10*log10(R)], <span class="string">'LineWidth'</span>, 2);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Spike Spectrum (dB)'</span>)
+title(<span class="string">'Spike train spectrum of cell 1 within 20-30 sec'</span>)
+</pre><p><b>Compute the derivative of the spectrum of spike trains</b></p><pre class="codeinput">phi=[0 pi/2];
+[dS, f] = mtdspectrumpt(cell12, phi, params);
+
+<span class="comment">% plot the results</span>
+figure
+plot(f, dS);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Derivatives'</span>)
+legend(<span class="string">'Time'</span>,<span class="string">'Frequency'</span>)
+title(<span class="string">'Time and frequency derivatives of spectrum of cells 1 and 2'</span>)
+</pre><p><b>Compute segmented spectrum of spike train of cell 1</b></p><pre class="codeinput">data = extractdatapt(dsp, [20 30]);
+data=data(1);
+[S, f, R, varS] = mtspectrumsegpt(data, winseg, params);
+
+<span class="comment">% display the results</span>
+fprintf(<span class="string">'varS = %0.2f\n'</span>, varS)
+
+<span class="comment">% plot the results</span>
+figure
+plot(f,10*log10(S))
+line(get(gca,<span class="string">'xlim'</span>),[10*log10(R) 10*log10(R)])
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Segment averaged power spectrum of cell 1'</span>)
+</pre><p><b>Compute the coherency between two spike trains</b></p><pre class="codeinput">cell1 = cell12(1);
+cell2 = cell12(2);
+fscorr = [];
+t = [];
+[C, phi, S12, S1, S2, f, zerosp, confC, phistd, Cerr] = coherencypt(cell1,<span class="keyword">...</span>
+    cell2, params, fscorr, t);
+
+<span class="comment">% display the results</span>
+fprintf(<span class="string">'zerosp is %d.\n'</span>, zerosp)
+fprintf(<span class="string">'Confidence level between cell 1 and 2 at %0.2f%% leve is %0.2f.\n'</span>,<span class="keyword">...</span>
+    1-params.err(2), confC)
+
+<span class="comment">% plot the results</span>
+figure
+subplot(2, 1, 1)
+ph = plot(f, C, f, Cerr(1, :), f, Cerr(2, :));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Coherence'</span>)
+title(<span class="string">'Coherence between spike trains of cell 1 and 2'</span>)
+
+subplot(2, 1, 2)
+ph = plot(f, unwrap(phi), f, unwrap(phi)-unwrap(phistd),<span class="keyword">...</span>
+    f, unwrap(phi)+unwrap(phistd));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Phase'</span>)
+
+figure
+subplot(3, 1, 1)
+plot(f, pow2db(abs(S12)))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Cross power spectrum between cell 1 and 2'</span>)
+
+subplot(3, 1, 2)
+plot(f,10*log10(S1))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Power spectrum of cell 1'</span>)
+
+subplot(3, 1, 3)
+plot(f,10*log10(S2))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Power spectrum of cell 2'</span>)
+</pre><p><b>Compute event triggered average spectrum for spike trains</b></p><pre class="codeinput">cell1_whole = dsp(1);
+[S, f, R, Serr] = mtspectrumtrigpt(cell1_whole, E1, wintrig, params);
+
+<span class="comment">% plot the results</span>
+figure
+ph = plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:)));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'y'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'y'</span>, <span class="string">'LineWidth'</span>, .5);
+line(get(gca,<span class="string">'xlim'</span>),[10*log10(R) 10*log10(R)], <span class="string">'LineWidth'</span>, 2)
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Spike Spectrum (dB)'</span>)
+title(<span class="string">'Event triggered spike train spectrum of cell 1'</span>)
+</pre><p><b>Compute the matrix of coherencies between cell 1 and 2</b></p><pre class="codeinput">fscorr=[];
+[C, phi, S12, f, zerosp, confC, phistd, Cerr] = cohmatrixpt(cell12,<span class="keyword">...</span>
+    params, fscorr);
+
+<span class="comment">% display the results</span>
+fprintf(<span class="string">'zerosp is %d.\n'</span>, zerosp)
+fprintf(<span class="string">'Confidence level between cell 1 and 2 at %0.2f%% leve is %0.2f.\n'</span>,<span class="keyword">...</span>
+    1-params.err(2), confC(1, 2))
+
+<span class="comment">% plot the results</span>
+figure
+subplot(2, 1, 1)
+plot(f, pow2db(abs(S12(:, 1, 2))))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power Spectrum (dB)'</span>)
+title(<span class="string">'Cross spectrum between cells 1 and 2'</span>)
+
+subplot(2, 1, 2)
+plot(f, unwrap(angle(S12(:, 1, 2))))
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Phase'</span>)
+
+figure
+subplot(2, 1, 1)
+ph = plot(f, C(:, 1, 2), f, Cerr(1, :, 1, 2), f, Cerr(2, :, 1, 2));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Coherence'</span>)
+title(<span class="string">'Coherence between cells 1 and 2'</span>)
+
+subplot(2, 1, 2)
+ph = plot(f, unwrap(phi(:, 1, 2)), f, unwrap(phi(:, 1, 2))-unwrap(phistd(1, :, 1, 2).'),<span class="keyword">...</span>
+    f, unwrap(phi(:, 1, 2))+unwrap(phistd(2, :, 1, 2).'));
+set(ph(1), <span class="string">'Color'</span>, <span class="string">'#0072BD'</span>, <span class="string">'LineWidth'</span>, 2);
+set(ph(2), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+set(ph(3), <span class="string">'Color'</span>, <span class="string">'#D95319'</span>, <span class="string">'LineWidth'</span>, .5);
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Phase'</span>)
+</pre><p><b>Segmented coherency between cell 1 and 2</b></p><pre class="codeinput">data=extractdatapt(dsp,[20 30]);
+data1=data(1);
+data2=data(2);
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr] = <span class="keyword">...</span>
+    coherencysegpt(data1,data2,winseg,params);
+
+figure
+subplot(311)
+plot(f,C);subplot(312)
+plot(f,10*log10(S1))
+subplot(313)
+plot(f,10*log10(S2))
+</pre><h2 id="18">Analysis of Hybrid Process (LFP and Spike Trains)</h2><p><b>LFP and spike train analysis of cell 1</b></p><pre class="codeinput">offset=1;
+data1=dlfp(20000:30000,1); data2=extractdatapt(dsp,[20 30],offset);data2=data2(1).times;
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencycpt(data1,data2,params);
+figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1));subplot(313); plot(f,10*log10(S2))
+
+
+data1=dlfp(20000:30000,1); data2=extractdatapt(dsp,[20 30],offset);data2=data2(1).times;
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegcpt(data1,data2,winseg,params,segave,fscorr);
+figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1));subplot(313); plot(f,10*log10(S2))
+
+
+data1=dlfp(20000:30000,1); data2=extractdatapt(dsp,[20 30],offset);data2=data2(1).times;
+[C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgramcpt(data1,data2,movingwin,params,fscorr);
+figure; subplot(311); imagesc(t,f,C');axis <span class="string">xy</span>; colorbar; subplot(312);imagesc(t,f,10*log10(S1)');axis <span class="string">xy</span>; colorbar; subplot(313); imagesc(t,f,10*log10(S2)');axis <span class="string">xy</span>; colorbar
+</pre><p><b>Time-frequency analysis of LFP</b></p><div><ul><li>Compute spectrogram of Channels 1&amp;2</li></ul></div><pre class="codeinput">[S, t, f, Serr] = mtspecgramc(data1, movingwin, params);
+
+<span class="comment">% plot the results</span>
+figure
+subplot(3, 1, 1)
+imagesc(t, f, 10*log10(S)')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Spectrogram of channels 1&amp;2'</span>)
+
+subplot(3, 1, 2)
+imagesc(t, f, 10*log10(squeeze(Serr(1, :, :)))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Lower bound of error of channels 1&amp;2'</span>)
+
+subplot(3, 1, 3)
+imagesc(t, f, 10*log10(squeeze(Serr(2, :, :)))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Upper bound of error of channels 1&amp;2'</span>)
+</pre><p><b>Compute time-frequency derivative of the spectrogram for channels 1&amp;2</b></p><pre class="codeinput">phi=[0 pi/2];
+[dS, t, f] = mtdspecgramc(data1, movingwin, phi, params);
+
+<span class="comment">% plot the results</span>
+figure
+subplot(211)
+imagesc(t, f, squeeze(dS(1,:,:))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(sprintf(<span class="string">'Time-frequency derivative at angle %0.2f rad'</span>, phi(1)))
+
+subplot(212)
+imagesc(t, f, squeeze(dS(2,:,:))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(sprintf(<span class="string">'Time-frequency derivative at angle %0.2f rad'</span>, phi(2)))
+</pre><p><b>Compute spectrogram of channel 1 triggered by events E</b></p><pre class="codeinput">[S, t, f, Serr] = mtspecgramtrigc(data1_e, E1, wintrig, movingwin, params);
+
+<span class="comment">% plot the results</span>
+figure
+subplot(3, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(S)')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+hold <span class="string">on</span>
+plot([0 0], ylim, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Event triggered spectrogram of channels 1'</span>)
+
+subplot(3, 1, 2)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(1, :, :)))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+hold <span class="string">on</span>
+plot([0 0], ylim, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Lower bound of error of channels 1'</span>)
+
+subplot(3, 1, 3)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(2, :, :)))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+hold <span class="string">on</span>
+plot([0 0], ylim, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Upper bound of error of channels 1'</span>)
+</pre><p><b>Compute coherogram between channels 1&amp;2 and channles 3&amp;4</b></p><pre class="codeinput">[C, phi, S12, S1, S2, t, f, confC, phistd, Cerr] = cohgramc(data1, data2,<span class="keyword">...</span>
+    movingwin, params);
+
+<span class="comment">% display the results</span>
+fprintf(<span class="string">'Confidence level of coherogram between channel 1&amp;2 and 3&amp;4 at %0.2f%% leve is %0.2f.\n'</span>,<span class="keyword">...</span>
+    1-params.err(2), confC)
+
+<span class="comment">% plot the results</span>
+figure
+subplot(2, 1, 1)
+imagesc(t, f, C')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram magnitude between channels 1&amp;2 and chnnels 3&amp;4'</span>)
+
+subplot(2, 1, 2)
+imagesc(t, f, phi')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram phase between channels 1&amp;2 and chnnels 3&amp;4'</span>)
+
+figure
+subplot(2, 1, 1)
+imagesc(t, f, squeeze(Cerr(1, :, :))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram magnitude lower bound between channels 1&amp;2 and chnnels 3&amp;4'</span>)
+
+subplot(2, 1, 2)
+imagesc(t, f, squeeze(Cerr(2, :, :))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram magnitude upper bound between channels 1&amp;2 and chnnels 3&amp;4'</span>)
+
+figure
+subplot(2, 1, 1)
+imagesc(t, f, (phi-phistd)')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram phase lower bound between channels 1&amp;2 and chnnels 3&amp;4'</span>)
+
+subplot(2, 1, 2)
+imagesc(t, f, (phi+phistd)')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram phase upper bound between channels 1&amp;2 and chnnels 3&amp;4'</span>)
+
+figure
+subplot(2, 1, 1)
+imagesc(t, f, 10*log10(S1)')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Spectrogram of channels 1&amp;2'</span>)
+
+subplot(2, 1, 2)
+imagesc(t, f, 10*log10(S2)')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Spectrogram of channels 3&amp;4'</span>)
+
+figure
+subplot(2, 1, 1)
+imagesc(t, f, 10*log10(abs(S12))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Cross spectrogram magnitude of channels 1&amp;2 and channels 3&amp;4'</span>)
+
+subplot(2, 1, 2)
+imagesc(t, f, angle(S12)')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Cross spectrogram phase of channels 1&amp;2 and channels 3&amp;4'</span>)
+</pre><p><b>Time-frequency analysis of spike trains</b></p><div><ul><li>Event triggered spectrogram of spike train - first way</li></ul></div><pre class="codeinput">cell1_trig = createdatamatpt(dsp(1), E1, wintrig);
+[S, t, f, R, Serr] = mtspecgrampt(cell1_trig, movingwin, params);
+
+<span class="comment">% plot the results</span>
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(S)')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar(<span class="string">'northoutside'</span>)
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+xlabel(<span class="string">'Time around event onset (s)'</span>)
+ylabel(<span class="string">'Frquency (Hz)'</span>)
+title(<span class="string">'Event triggered spectrogram of cell 1 spike train'</span>)
+
+subplot(2, 1, 2)
+plot(t-wintrig(1), pow2db(R))
+line([0 0], ylim, <span class="string">'Color'</span>, <span class="string">'k'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">tight</span>
+xlabel(<span class="string">'Time around event onset (s)'</span>)
+ylabel(<span class="string">'Log spike rate (dB)'</span>)
+title(<span class="string">'Event triggered spike rate of cell 1'</span>)
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(1, :, :)))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar(<span class="string">'northoutside'</span>)
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+xlabel(<span class="string">'Time around event onset (s)'</span>)
+ylabel(<span class="string">'Frquency (Hz)'</span>)
+title(<span class="string">'Event triggered spectrogram lower bound of cell 1 spike train'</span>)
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(2, :, :)))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar(<span class="string">'northoutside'</span>)
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+xlabel(<span class="string">'Time around event onset (s)'</span>)
+ylabel(<span class="string">'Frquency (Hz)'</span>)
+title(<span class="string">'Event triggered spectrogram upper bound of cell 1 spike train'</span>)
+</pre><p><b>Event Triggered spectrogram of spike train - second way</b></p><pre class="codeinput">[S, t, f, R, Serr] = mtspecgramtrigpt(cell1_whole, E1, wintrig,<span class="keyword">...</span>
+    movingwin, params);
+
+<span class="comment">% plot the results</span>
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(S)')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar(<span class="string">'northoutside'</span>)
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+xlabel(<span class="string">'Time around event onset (s)'</span>)
+ylabel(<span class="string">'Frquency (Hz)'</span>)
+title(<span class="string">'Event triggered spectrogram of cell 1 spike train'</span>)
+
+subplot(2, 1, 2)
+plot(t-wintrig(1), pow2db(R))
+line([0 0], ylim, <span class="string">'Color'</span>, <span class="string">'k'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">tight</span>
+xlabel(<span class="string">'Time around event onset (s)'</span>)
+ylabel(<span class="string">'Log spike rate (dB)'</span>)
+title(<span class="string">'Event triggered spike rate of cell 1'</span>)
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(1, :, :)))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar(<span class="string">'northoutside'</span>)
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+xlabel(<span class="string">'Time around event onset (s)'</span>)
+ylabel(<span class="string">'Frquency (Hz)'</span>)
+title(<span class="string">'Event triggered spectrogram lower bound of cell 1 spike train'</span>)
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(2, :, :)))')
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar(<span class="string">'northoutside'</span>)
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+xlabel(<span class="string">'Time around event onset (s)'</span>)
+ylabel(<span class="string">'Frquency (Hz)'</span>)
+title(<span class="string">'Event triggered spectrogram upper bound of cell 1 spike train'</span>)
+</pre><p><b>Derivative of the time-frequency spectrum of spike train</b></p><pre class="codeinput">phi=[0 pi/2];
+[dS, t, f] = mtdspecgrampt(cell1_trig, movingwin, phi, params);
+
+<span class="comment">% plot the results</span>
+figure
+subplot(211)
+imagesc(t-wintrig(1), f, squeeze(dS(1,:,:))')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time around event onset (s)'</span>)
+ylabel(<span class="string">'Frquency (Hz)'</span>)
+title(sprintf(<span class="string">'Dirivative spectrogram of cell 1 spike train at angle %0.1f&ordm;'</span>,<span class="keyword">...</span>
+   rad2deg(phi(1))))
+
+subplot(212)
+imagesc(t-wintrig(2), f, squeeze(dS(2,:,:))')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time around event onset (s)'</span>)
+ylabel(<span class="string">'Frquency (Hz)'</span>)
+title(sprintf(<span class="string">'Dirivative spectrogram of cell 1 spike train at angle %0.1f&ordm;'</span>,<span class="keyword">...</span>
+   rad2deg(phi(2))))
+</pre><p><b>Coherogram between the two spike trains</b></p><pre class="codeinput">cell2_trig = createdatamatpt(dsp(2),E1,wintrig);
+[C, phi, S12, S1, S2, t, f, zerosp, confC, phistd, Cerr] = <span class="keyword">...</span>
+    cohgrampt(cell1_trig, cell2_trig, movingwin, params, fscorr);
+
+<span class="comment">% display the results</span>
+fprintf(<span class="string">'zerosp = %d\n'</span>, zerosp)
+fprintf(<span class="string">'Confidence level of coherogram between cell 1 and 2 at %0.2f%% leve is %0.2f.\n'</span>,<span class="keyword">...</span>
+    1-params.err(2), confC)
+
+<span class="comment">% plot the results</span>
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, C')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram magnitude between cell 1 and 2'</span>)
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, phi')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram phase between cell 1 and 2'</span>)
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, squeeze(Cerr(1, :, :))')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram magnitude lower bound between cell 1 and 2'</span>)
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, squeeze(Cerr(2, :, :))')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram magnitude upper bound between cell 1 and 2'</span>)
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, (phi-phistd)')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram phase lower bound between cell 1 and 2'</span>)
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, (phi+phistd)')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Coherogram phase upper bound between cell 1 and 2'</span>)
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(S1)')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Spectrogram of cell 1'</span>)
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, 10*log10(S2)')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Spectrogram of cell 2'</span>)
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(abs(S12))')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Cross spectrogram magnitude of cell 1 and 2'</span>)
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, angle(S12)')
+line([0 0], get(gca, <span class="string">'ylim'</span>), <span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'LineWidth'</span>, 2)
+axis <span class="string">xy</span>
+colormap(<span class="string">'jet'</span>), colorbar
+ylabel(<span class="string">'Frequency (Hz)'</span>)
+title(<span class="string">'Cross spectrogram phase of cell 1 and 2'</span>)
+</pre><p>Analysis: Binned spike counts</p><pre class="codeinput">[dN,t]=binspikes(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
+
+data=dN;
+[S,f,R,Serr]=mtspectrumpb(data,params);
+plot(f,10*log10(S),f,10*log10(Serr(1,:)), f,10*log10(Serr(2,:))); <span class="comment">%line(get(gca,'xlim'),[10*log10(R) 10*log10(R)]);</span>
+
+data=dN;
+phi=[0 pi/2];
+[dS,f]=mtdspectrumpb(data,phi,params);
+figure; plot(f,dS);
+
+data=dN;
+data1=data(:,1); data2=data(:,2);fscorr=[];t=[];
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencypb(data1,data2,params);
+figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1)); subplot(313); plot(f,10*log10(S2));
+
+E=targon(find(targets==direction)); E=E(find(E&gt;20 &amp; E&lt;450)); [dN,t]=binspikes(dsp,params.Fs,[20 500]);data=dN(:,1);
+[S,f,R,Serr]=mtspectrumtrigpb(data,E,wintrig,params);
+figure;plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:)));
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
+data=dN;
+[C,phi,S12,f,zerosp,confC,phistd,Cerr]=cohmatrixpb(data,params,fscorr);
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
+data=dN;
+[S,t,f,R,Serr]=mtspecgrampb(data,movingwin,params);
+figure;imagesc(t,f,10*log10(S)'); axis <span class="string">xy</span>; colorbar
+
+clear <span class="string">R</span> <span class="string">Serr</span> <span class="string">Cerr</span> <span class="string">S</span> <span class="string">C</span> <span class="string">phierr</span> <span class="string">dN</span> <span class="string">dS</span> <span class="string">data1</span> <span class="string">data2</span>
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
+data=dN;
+phi=[0 pi/2];
+[dS,t,f]=mtdspecgrampb(data,movingwin,phi,params);
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
+data=dN;
+data1=data(:,1); data2=data(:,2);
+[C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgrampb(data1,data2,movingwin,params,fscorr);
+
+[dN,t]=binspikes(dsp,params.Fs); <span class="comment">% extract spikes</span>
+dN=dN(:,1);
+E=E(1:6);
+data=dN;
+[S,t,f,R,Serr]=mtspecgramtrigpb(data,E,wintrig,movingwin,params);
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
+data=dN;
+data=data(:,1);
+[S,f,R,varS]=mtspectrumsegpb(data,winseg,params,segave,fscorr);
+figure; plot(f,10*log10(S)); line(get(gca,<span class="string">'xlim'</span>),10*log10([R R]));
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
+data=dN;
+data1=data(:,1);data2=data(:,2);
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegpb(data1,data2,winseg,params);
+</pre><p>Analysis - hybrid: one continous and one point process stored as counts</p><pre class="codeinput">data1=dlfp(20000:30000,:);data1=data1(:,1:2); [dN,t]=binspikes(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
+data2=dN; data2=data2(1:end,:);
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencycpb(data1,data2,params);
+
+data1=data1(:,1); data2=data2(:,1);
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegcpb(data1,data2,winseg,params,segave,fscorr);
+
+
+data1=dlfp(20000:30000,:); data1=data1(:,1:2);
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); <span class="comment">% extract spikes occurring between 20 and 30 seconds</span>
+data2=dN; data2=data2(1:end,:);
+[C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgramcpb(data1,data2,movingwin,params,fscorr);
+</pre><h2 id="29">References</h2><div><ol><li>Pesaran, B., Pezaris, J. S., Sahani, M., Mitra, P. P., &amp; Andersen, R.   A. (2002). Temporal structure in neuronal activity during working   memory in macaque parietal cortex. Nature Neuroscience, 5(8), 805-811.</li><li>Bokil, H., Andrews, P., Kulkarni, J. E., Mehta, S., &amp; Mitra, P. P.   (2010). Chronux: A platform for analyzing neural signals. Journal of   Neuroscience Methods, 192(1), 146-151.   doi:10.1016/j.jneumeth.2010.06.020</li><li>Mitra, P. P., &amp; Pesaran, B. (1999). Analysis of dynamic brain imaging   data. Biophysical Journal, 76(2), 691-708.</li><li>Mitra, P., &amp; Bokil, H. (2008). Observed brain dynamics. New York:   Oxford University Press.</li></ol></div><p><i>Modified by Richard J. Cui (<a href="mailto:richard.jie.cui@gmail.com">richard.jie.cui@gmail.com</a>) on Thu 03/26/2020 10:49:56.888 AM</i></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% TESTSCRIPT
+% Script for testing Chronux package
+
+%% Introduction
+% 
+% This script runs a sequence of analysis steps using the test data
+% contained in directory 'data'. The data consists of a single tetrode
+% recording from macaque area LIP during a memory saccade experiment. The
+% data are already separated into spikes and LFPs. LFPs are contained in
+% variable 'dlfp'. Spikes from two neurons are in a struct array 'dsp'.
+% 
+% *Event information* is in the following set of variables:
+% 
+% * |trialtimes|    - start times of trials
+% * |fixon|         - fixation light comes on
+% * |fixacq|        - fixation acquired
+% * |targon|        - target light on
+% * |targoff|       - target light off
+% * |fixoff|        - fixation light comes off
+% * |saccade|       - saccade
+%
+% Note that spikes and event times are in seconds and the sampling
+% frequency for the LFP in this experiment was 1kHz. The following
+% *parameters* are involved in this script:
+% 
+% * |pname|         - path name on your computer where the data file 
+%                     LIPdata is stored.
+% * |direction|     - target direction to be analysed (0-7)
+%
+% The remaining *parameters* control various computations and are discussed
+% in chronux.m - type Help chronux.m or refer to chronux manual for more
+% information.
+% 
+% * |movingwin|     - moving window size for time-frequency analysis, 
+%                     [winsize, winstep] in units consistent with Fs
+%                     (sampling frequency)
+% * |segave|        - whether to average over segments (1: average over 
+%                     segment; 0: no average)
+% * |wintrig|       - window size around the trigger event,
+%                     [winsize_left, winsize_right] in units consistent
+%                     with Fs
+% * |winseg|        - window size of a segment in units consistent with Fs
+
+%% Global parameters and options
+
+% clear all
+clearvars
+
+% data location
+pname   = 'data';           % path name
+fname   = 'LIPdata.mat';    % data file name
+
+% analysis parameters and options
+Fs          = 1000;     % sampling frequency in Hz
+direction   = 5;        % 0-7
+
+movingwin   = [0.5 0.05];   % winsize 500 ms, winstep 50 ms (overlap 90%)
+segave      = 1;            % average over segments
+wintrig     = 5*movingwin(1)*ones(2, 1);    % 2500 ms for both left and right
+winseg      = 10*movingwin(1);  % segment size = 5 second
+
+params.Fs   = Fs;   % sampling frequency
+params.fpass    = [10 100]; % band of frequencies to be kept
+params.tapers   = [3 5];    % taper parameters; TW = 3
+params.pad  = 2;    % pad factor for fft to decide the number of points
+params.err  = [2 0.05]; % 2 = jacknife error bar, p = 0.05
+params.trialave = 1;    % overage over 2nd dimension (trials or channels)
+
+%% Data loading
+full_name = fullfile(pname,fname);
+load(full_name, 'dlfp', 'dsp', 'targets', 'targon')
+
+%% Analysis of Continous Process (Local Field Potentials, LFPs)
+% 
+% *Frequency domain analysis*
+%
+% * Spectrum estimation
+% 
+% _Spectrum of the first 5 seconds of LFP channels 1-2_
+% 
+% In this analysis we set sampling rate Fs = 1000 Hz, window size T = 5s,
+% TW = 3, so that the half-bandwidth W = 3/5 = 0.6 Hz, which results in the
+% frequency resolution of 2 x W = 1.2 Hz.  To get error bar we use Jackknife
+% method with p-value = 0.05.
+
+% get the data and local options
+NT = round(Fs*winseg); % number of points in 5 seconds data
+data = dlfp(1:NT,:); % samples x channels of 1st 5 seconds
+data1 = data(:,1:2); % only for channel 1-2
+
+% do the calculation
+[S_noseg, f, Serr] = mtspectrumc(data1, params);
+
+% plot the results
+figure
+ph = plot(f,10*log10(Serr(1,:)), f, 10*log10(Serr(2,:)), f, 10*log10(S_noseg));
+set(ph(1), 'Color', 'g', 'LineWidth', .5);
+set(ph(2), 'Color', 'g', 'LineWidth', .5);
+set(ph(3), 'Color', 'b', 'LineWidth', 2);
+legend([ph(3), ph(1)], {'spectrum', 'C-Interval'})
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Averaged power spectrum of Channel 1&2')
+
+%%
+% _Derivative of the spectrum ([4] Mirta, 2008, pp.203-207)_
+
+% get the data and local options
+NT = round(Fs*winseg); % number of points in 5 seconds data
+data = dlfp(1:NT,:); % samples x channels of 1st 5 seconds
+data1 = data(:,1:2); % only for channel 1-2
+phi = [0 pi/2];
+
+% do the calculation
+[dS, f] = mtdspectrumc(data1, phi, params);
+
+% present the results
+figure
+plot(f, dS(1,:), f, dS(2,:));
+xlabel('Frequency (Hz)')
+ylabel('Derivatives')
+legend('Time','Frequency')
+title('Time and frequency derivatives of spectrum of Channels 1-2')
+
+%% 
+% _Spectrum of channel 1 triggered by events E_
+
+% get the data and local options
+E = targon(targets == direction); 
+data1 = dlfp(:,1); 
+
+% do the calculation
+[S_noseg, f, Serr] = mtspectrumtrigc(data1, E, wintrig, params);
+
+% plot the results
+ph = plot(f,10*log10(Serr(1,:)), f, 10*log10(Serr(2,:)), f, 10*log10(S_noseg));
+set(ph(1), 'Color', 'g', 'LineWidth', .5);
+set(ph(2), 'Color', 'g', 'LineWidth', .5);
+set(ph(3), 'Color', 'b', 'LineWidth', 2);
+legend([ph(3), ph(1)], {'spectrum', 'C-Interval'})
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Event triggered power spectrum of Channel 1')
+
+%% 
+% _Segmented spectrum of channel 1&2_
+%
+% We segment a 50-second signal into 10 5-second segments and then average
+% the spectrum.  
+
+% get the data and local options
+NT = 10*round(winseg*Fs); % number of samples in 50 second window segment
+data1 = dlfp(1:NT, 1);
+
+% do the calculation
+[S, f, varS, C, Serr] = mtspectrumsegc(data1, winseg, params, segave);
+
+% plot the results
+figure
+ph = plot(f, pow2db(S_noseg), f, pow2db(S));
+set(ph(2), 'LineWidth', 2)
+grid on
+legend('non-seg', 'seg-smoothed')
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Comparison of averaged power spectrum of Channel 1-2')
+
+figure
+subplot(2, 1, 1)
+ph = plot(f, pow2db(S), f, pow2db(Serr(1, :)), f, pow2db(Serr(2, :)));
+set(ph(1), 'Color', '#D95319', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+ylabel('Power Spectrum (dB)')
+title('Segment averaged power spectrum of Channel 1-2')
+
+subplot(2, 1, 2)
+plot(f, varS)
+xlabel('Frequency (Hz)')
+ylabel('Variance')
+title('Variance of the log spectrum')
+
+figure
+imagesc(f,f,C)
+axis xy
+colormap('jet'), colorbar('northoutside')
+xlabel('Frequency (Hz)')
+ylabel('Frequency (Hz)')
+title('Covarance matrix of log spectrum')
+
+%% 
+% * Coherency estimation
+% 
+% _Coherency matrix between channels 1 and 2_ 
+
+% get the data and local options
+NT = round(winseg*Fs); % number of samples in 5 second window segment
+data1 = dlfp(1:NT, 1:2);
+
+% do the calculation
+[C_noseg, phi, S12, f, confC, phistd, Cerr] = cohmatrixc(data1, params);
+
+% display the results
+fprintf('Confidence level between channel 1 and 2 at %0.2f%% leve is %0.2f.\n',...
+    1-params.err(2), confC(1, 2))
+
+% plot the results
+figure
+subplot(2, 1, 1)
+plot(f, pow2db(abs(S12(:, 1, 2))))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Cross spectrum between Channel 1 & 2')
+
+subplot(2, 1, 2)
+plot(f, angle(S12(:, 1, 2)))
+xlabel('Frequency (Hz)')
+ylabel('Phase')
+
+figure
+subplot(2, 1, 1)
+ph = plot(f, C_noseg(:, 1, 2), f, Cerr(1, :, 1, 2), f, Cerr(2, :, 1, 2));
+set(ph(1), 'Color', '#0072BD', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+xlabel('Frequency (Hz)')
+ylabel('Coherence')
+title('Coherence between Channel 1 and 2')
+
+subplot(2, 1, 2)
+ph = plot(f, phi(:, 1, 2), f, phi(:, 1, 2)-phistd(1, :, 1, 2).',...
+    f, phi(:, 1, 2)+phistd(2, :, 1, 2).');
+set(ph(1), 'Color', '#0072BD', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+xlabel('Frequency (Hz)')
+ylabel('Phase')
+
+%%
+% _Segmented coherency between channels 1 and channels 2_
+
+% get the data and local options
+NT = 10*round(winseg*Fs); % number of samples in 50 second window segment
+data1 = dlfp(1:NT, 1);
+data2 = dlfp(1:NT, 2);
+
+% do the calculation
+[C, phi, S12, S1, S2, f, confC, phistd, Cerr] = coherencysegc(data1, data2,...
+    winseg, params);
+
+% display the results
+fprintf('Segment averaged confidence level between channel 1 and 2 at %0.2f%% leve is %0.2f.\n',...
+    1-params.err(2), confC)
+
+% plot the results
+figure
+ph = plot(f, C_noseg(:, 1, 2), f, C);
+ylim([.9 1])
+set(ph(2), 'LineWidth', 2)
+legend('no-seg', 'seg-smoothed')
+xlabel('Frequency (Hz)')
+ylabel('Coherence')
+title('Comparison segmented average coherence between channels 1 and 2')
+
+figure
+subplot(2, 1, 1)
+ph = plot(f, C, f, Cerr(1, :), f, Cerr(2, :));
+set(ph(1), 'Color', '#0072BD', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+xlabel('Frequency (Hz)')
+ylabel('Coherence')
+title('Segmented average coherence between channels 1 and 2')
+
+subplot(2, 1, 2)
+ph = plot(f, phi, f, phi-phistd, f, phi+phistd);
+set(ph(1), 'Color', '#0072BD', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+xlabel('Frequency (Hz)')
+ylabel('Phase')
+
+figure
+subplot(3, 1, 1)
+plot(f, pow2db(abs(S12)))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Segment averaged cross power spectrum between channels 1 and 2')
+
+subplot(3, 1, 2)
+plot(f,10*log10(S1))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Segment averaged power spectrum of channels 1')
+
+subplot(3, 1, 3)
+plot(f,10*log10(S2))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Segment averaged power spectrum of channels 2')
+
+%% 
+% _Coherency between channels 1-2 and 3-4_
+% 
+% Here the two channels in each group are treated as two trials
+
+% get the data and local options
+NT      = round(Fs*winseg); % number of points in 5 seconds data
+data    = dlfp(1:NT,:); % samples x channels of 1st 5 seconds
+data1   = data(:, 1:2); % only for channel 1-2
+data2   = data(:, 3:4); % only for channel 3-4
+
+% do the calculation
+[C, phi, S12, S1, S2, f, confC, phistd, Cerr] = coherencyc(data1, data2, params); 
+
+% display the results
+fprintf('Confidence level between channel 1&2 and 3&4 at %0.2f%% leve is %0.2f.\n',...
+    1-params.err(2), confC)
+
+% plot the results
+figure
+subplot(2, 1, 1)
+plot(f, pow2db(abs(S12)))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Cross spectrum between Channel 1-2 and 3-4')
+
+subplot(2, 1, 2)
+plot(f, angle(S12))
+xlabel('Frequency (Hz)')
+ylabel('Phase')
+
+figure
+subplot(2, 1, 1)
+plot(f, pow2db(S1))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Spectrum of Channel 1-2')
+
+subplot(2, 1, 2)
+plot(f, pow2db(S2))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Spectrum of Channel 3-4')
+
+figure
+subplot(2, 1, 1)
+ph = plot(f, C, f, Cerr(1,:), f, Cerr(2,:));
+set(ph(1), 'Color', '#0072BD', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+xlabel('frequency (Hz)')
+ylabel('Coherency');
+title('Coherence between Channels 1-2 and 3-4')
+
+subplot(2, 1, 2)
+ph = plot(f, phi, f, phi-phistd, f, phi+phistd);
+set(ph(1), 'Color', '#0072BD', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+xlabel('Frequency (Hz)')
+ylabel('Phase')
+
+%% Analysis of Point Process (Spike Trains)
+% 
+% *Frequency domain analysis*
+% 
+% * Spectrum estimation
+% 
+% _Spectrum of spike trains_
+
+% dsp contains 2 channels of spikes;
+% extract spikes occurring between 20 and 30 seconds and compute their spectrum
+cell12 = extractdatapt(dsp, [20 30]); 
+
+[S, f, R, Serr] = mtspectrumpt(cell12, params);
+
+% plot the results
+figure
+ph = plot(f, 10*log10(S), f, 10*log10(Serr(1,:)), f, 10*log10(Serr(2,:)));
+set(ph(1), 'Color', '#D95319', 'LineWidth', 2);
+set(ph(2), 'Color', 'y', 'LineWidth', .5);
+set(ph(3), 'Color', 'y', 'LineWidth', .5);
+line(get(gca,'xlim'),[10*log10(R) 10*log10(R)], 'LineWidth', 2);
+xlabel('Frequency (Hz)')
+ylabel('Spike Spectrum (dB)')
+title('Spike train spectrum of cell 1 within 20-30 sec')
+
+%%
+% *Compute the derivative of the spectrum of spike trains*
+
+phi=[0 pi/2];
+[dS, f] = mtdspectrumpt(cell12, phi, params);
+
+% plot the results
+figure
+plot(f, dS);
+xlabel('Frequency (Hz)')
+ylabel('Derivatives')
+legend('Time','Frequency')
+title('Time and frequency derivatives of spectrum of cells 1 and 2')
+
+%%
+% *Compute segmented spectrum of spike train of cell 1*
+
+data = extractdatapt(dsp, [20 30]);
+data=data(1);
+[S, f, R, varS] = mtspectrumsegpt(data, winseg, params);
+
+% display the results
+fprintf('varS = %0.2f\n', varS)
+
+% plot the results
+figure
+plot(f,10*log10(S))
+line(get(gca,'xlim'),[10*log10(R) 10*log10(R)])
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Segment averaged power spectrum of cell 1')
+
+%%
+% *Compute the coherency between two spike trains*
+
+cell1 = cell12(1); 
+cell2 = cell12(2);
+fscorr = [];
+t = [];
+[C, phi, S12, S1, S2, f, zerosp, confC, phistd, Cerr] = coherencypt(cell1,...
+    cell2, params, fscorr, t);
+
+% display the results
+fprintf('zerosp is %d.\n', zerosp)
+fprintf('Confidence level between cell 1 and 2 at %0.2f%% leve is %0.2f.\n',...
+    1-params.err(2), confC)
+
+% plot the results
+figure
+subplot(2, 1, 1)
+ph = plot(f, C, f, Cerr(1, :), f, Cerr(2, :));
+set(ph(1), 'Color', '#0072BD', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+xlabel('Frequency (Hz)')
+ylabel('Coherence')
+title('Coherence between spike trains of cell 1 and 2')
+
+subplot(2, 1, 2)
+ph = plot(f, unwrap(phi), f, unwrap(phi)-unwrap(phistd),...
+    f, unwrap(phi)+unwrap(phistd));
+set(ph(1), 'Color', '#0072BD', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+xlabel('Frequency (Hz)')
+ylabel('Phase')
+
+figure
+subplot(3, 1, 1)
+plot(f, pow2db(abs(S12)))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Cross power spectrum between cell 1 and 2')
+
+subplot(3, 1, 2)
+plot(f,10*log10(S1))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Power spectrum of cell 1')
+
+subplot(3, 1, 3)
+plot(f,10*log10(S2))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Power spectrum of cell 2')
+
+%%
+% *Compute event triggered average spectrum for spike trains*
+
+cell1_whole = dsp(1);
+[S, f, R, Serr] = mtspectrumtrigpt(cell1_whole, E1, wintrig, params);
+
+% plot the results
+figure
+ph = plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:)));
+set(ph(1), 'Color', '#D95319', 'LineWidth', 2);
+set(ph(2), 'Color', 'y', 'LineWidth', .5);
+set(ph(3), 'Color', 'y', 'LineWidth', .5);
+line(get(gca,'xlim'),[10*log10(R) 10*log10(R)], 'LineWidth', 2)
+xlabel('Frequency (Hz)')
+ylabel('Spike Spectrum (dB)')
+title('Event triggered spike train spectrum of cell 1')
+
+%%
+% *Compute the matrix of coherencies between cell 1 and 2*
+
+fscorr=[];
+[C, phi, S12, f, zerosp, confC, phistd, Cerr] = cohmatrixpt(cell12,...
+    params, fscorr);
+
+% display the results
+fprintf('zerosp is %d.\n', zerosp)
+fprintf('Confidence level between cell 1 and 2 at %0.2f%% leve is %0.2f.\n',...
+    1-params.err(2), confC(1, 2))
+
+% plot the results
+figure
+subplot(2, 1, 1)
+plot(f, pow2db(abs(S12(:, 1, 2))))
+xlabel('Frequency (Hz)')
+ylabel('Power Spectrum (dB)')
+title('Cross spectrum between cells 1 and 2')
+
+subplot(2, 1, 2)
+plot(f, unwrap(angle(S12(:, 1, 2))))
+xlabel('Frequency (Hz)')
+ylabel('Phase')
+
+figure
+subplot(2, 1, 1)
+ph = plot(f, C(:, 1, 2), f, Cerr(1, :, 1, 2), f, Cerr(2, :, 1, 2));
+set(ph(1), 'Color', '#0072BD', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+xlabel('Frequency (Hz)')
+ylabel('Coherence')
+title('Coherence between cells 1 and 2')
+
+subplot(2, 1, 2)
+ph = plot(f, unwrap(phi(:, 1, 2)), f, unwrap(phi(:, 1, 2))-unwrap(phistd(1, :, 1, 2).'),...
+    f, unwrap(phi(:, 1, 2))+unwrap(phistd(2, :, 1, 2).'));
+set(ph(1), 'Color', '#0072BD', 'LineWidth', 2);
+set(ph(2), 'Color', '#D95319', 'LineWidth', .5);
+set(ph(3), 'Color', '#D95319', 'LineWidth', .5);
+xlabel('Frequency (Hz)')
+ylabel('Phase')
+
+%%
+% *Segmented coherency between cell 1 and 2*
+
+data=extractdatapt(dsp,[20 30]);
+data1=data(1);
+data2=data(2);
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr] = ...
+    coherencysegpt(data1,data2,winseg,params);
+
+figure
+subplot(311)
+plot(f,C);subplot(312)
+plot(f,10*log10(S1))
+subplot(313)
+plot(f,10*log10(S2))
+
+%% Analysis of Hybrid Process (LFP and Spike Trains)
+%
+% *LFP and spike train analysis of cell 1*
+
+offset=1;
+data1=dlfp(20000:30000,1); data2=extractdatapt(dsp,[20 30],offset);data2=data2(1).times;
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencycpt(data1,data2,params);
+figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1));subplot(313); plot(f,10*log10(S2))
+
+
+data1=dlfp(20000:30000,1); data2=extractdatapt(dsp,[20 30],offset);data2=data2(1).times;
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegcpt(data1,data2,winseg,params,segave,fscorr);
+figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1));subplot(313); plot(f,10*log10(S2))
+
+
+data1=dlfp(20000:30000,1); data2=extractdatapt(dsp,[20 30],offset);data2=data2(1).times;
+[C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgramcpt(data1,data2,movingwin,params,fscorr);
+figure; subplot(311); imagesc(t,f,C');axis xy; colorbar; subplot(312);imagesc(t,f,10*log10(S1)');axis xy; colorbar; subplot(313); imagesc(t,f,10*log10(S2)');axis xy; colorbar
+
+
+
+%% 
+% *Time-frequency analysis of LFP*
+%
+% * Compute spectrogram of Channels 1&2
+[S, t, f, Serr] = mtspecgramc(data1, movingwin, params);
+
+% plot the results
+figure
+subplot(3, 1, 1)
+imagesc(t, f, 10*log10(S)')
+axis xy
+colormap('jet'), colorbar
+ylabel('Frequency (Hz)')
+title('Spectrogram of channels 1&2')
+
+subplot(3, 1, 2)
+imagesc(t, f, 10*log10(squeeze(Serr(1, :, :)))')
+axis xy
+colormap('jet'), colorbar
+ylabel('Frequency (Hz)')
+title('Lower bound of error of channels 1&2')
+
+subplot(3, 1, 3)
+imagesc(t, f, 10*log10(squeeze(Serr(2, :, :)))')
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Upper bound of error of channels 1&2')
+
+%%
+% *Compute time-frequency derivative of the spectrogram for channels 1&2*
+
+phi=[0 pi/2];
+[dS, t, f] = mtdspecgramc(data1, movingwin, phi, params);
+
+% plot the results
+figure
+subplot(211)
+imagesc(t, f, squeeze(dS(1,:,:))')
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title(sprintf('Time-frequency derivative at angle %0.2f rad', phi(1)))
+
+subplot(212)
+imagesc(t, f, squeeze(dS(2,:,:))')
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title(sprintf('Time-frequency derivative at angle %0.2f rad', phi(2)))
+
+%% 
+% *Compute spectrogram of channel 1 triggered by events E*
+
+[S, t, f, Serr] = mtspecgramtrigc(data1_e, E1, wintrig, movingwin, params);
+
+% plot the results
+figure
+subplot(3, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(S)')
+axis xy
+colormap('jet'), colorbar
+hold on
+plot([0 0], ylim, 'w', 'LineWidth', 2)
+ylabel('Frequency (Hz)')
+title('Event triggered spectrogram of channels 1')
+
+subplot(3, 1, 2)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(1, :, :)))')
+axis xy
+colormap('jet'), colorbar
+hold on
+plot([0 0], ylim, 'w', 'LineWidth', 2)
+ylabel('Frequency (Hz)')
+title('Lower bound of error of channels 1')
+
+subplot(3, 1, 3)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(2, :, :)))')
+axis xy
+colormap('jet'), colorbar
+hold on
+plot([0 0], ylim, 'w', 'LineWidth', 2)
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Upper bound of error of channels 1')
+
+%% 
+% *Compute coherogram between channels 1&2 and channles 3&4*
+
+[C, phi, S12, S1, S2, t, f, confC, phistd, Cerr] = cohgramc(data1, data2,...
+    movingwin, params);
+
+% display the results
+fprintf('Confidence level of coherogram between channel 1&2 and 3&4 at %0.2f%% leve is %0.2f.\n',...
+    1-params.err(2), confC)
+
+% plot the results
+figure
+subplot(2, 1, 1)
+imagesc(t, f, C')
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram magnitude between channels 1&2 and chnnels 3&4')
+
+subplot(2, 1, 2)
+imagesc(t, f, phi')
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram phase between channels 1&2 and chnnels 3&4')
+
+figure
+subplot(2, 1, 1)
+imagesc(t, f, squeeze(Cerr(1, :, :))')
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram magnitude lower bound between channels 1&2 and chnnels 3&4')
+
+subplot(2, 1, 2)
+imagesc(t, f, squeeze(Cerr(2, :, :))')
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram magnitude upper bound between channels 1&2 and chnnels 3&4')
+
+figure
+subplot(2, 1, 1)
+imagesc(t, f, (phi-phistd)')
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram phase lower bound between channels 1&2 and chnnels 3&4')
+
+subplot(2, 1, 2)
+imagesc(t, f, (phi+phistd)')
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram phase upper bound between channels 1&2 and chnnels 3&4')
+
+figure
+subplot(2, 1, 1)
+imagesc(t, f, 10*log10(S1)')
+axis xy
+colormap('jet'), colorbar
+ylabel('Frequency (Hz)')
+title('Spectrogram of channels 1&2')
+
+subplot(2, 1, 2)
+imagesc(t, f, 10*log10(S2)')
+axis xy
+colormap('jet'), colorbar
+ylabel('Frequency (Hz)')
+title('Spectrogram of channels 3&4')
+
+figure
+subplot(2, 1, 1)
+imagesc(t, f, 10*log10(abs(S12))')
+axis xy
+colormap('jet'), colorbar
+ylabel('Frequency (Hz)')
+title('Cross spectrogram magnitude of channels 1&2 and channels 3&4')
+
+subplot(2, 1, 2)
+imagesc(t, f, angle(S12)')
+axis xy
+colormap('jet'), colorbar
+ylabel('Frequency (Hz)')
+title('Cross spectrogram phase of channels 1&2 and channels 3&4')
+
+%% 
+% *Time-frequency analysis of spike trains*
+%
+% * Event triggered spectrogram of spike train - first way
+
+cell1_trig = createdatamatpt(dsp(1), E1, wintrig);
+[S, t, f, R, Serr] = mtspecgrampt(cell1_trig, movingwin, params);
+
+% plot the results
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(S)')
+axis xy
+colormap('jet'), colorbar('northoutside')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+xlabel('Time around event onset (s)')
+ylabel('Frquency (Hz)')
+title('Event triggered spectrogram of cell 1 spike train')
+
+subplot(2, 1, 2)
+plot(t-wintrig(1), pow2db(R))
+line([0 0], ylim, 'Color', 'k', 'LineWidth', 2)
+axis tight
+xlabel('Time around event onset (s)')
+ylabel('Log spike rate (dB)')
+title('Event triggered spike rate of cell 1')
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(1, :, :)))')
+axis xy
+colormap('jet'), colorbar('northoutside')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+xlabel('Time around event onset (s)')
+ylabel('Frquency (Hz)')
+title('Event triggered spectrogram lower bound of cell 1 spike train')
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(2, :, :)))')
+axis xy
+colormap('jet'), colorbar('northoutside')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+xlabel('Time around event onset (s)')
+ylabel('Frquency (Hz)')
+title('Event triggered spectrogram upper bound of cell 1 spike train')
+
+%%
+% *Event Triggered spectrogram of spike train - second way*
+
+[S, t, f, R, Serr] = mtspecgramtrigpt(cell1_whole, E1, wintrig,...
+    movingwin, params);
+
+% plot the results
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(S)')
+axis xy
+colormap('jet'), colorbar('northoutside')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+xlabel('Time around event onset (s)')
+ylabel('Frquency (Hz)')
+title('Event triggered spectrogram of cell 1 spike train')
+
+subplot(2, 1, 2)
+plot(t-wintrig(1), pow2db(R))
+line([0 0], ylim, 'Color', 'k', 'LineWidth', 2)
+axis tight
+xlabel('Time around event onset (s)')
+ylabel('Log spike rate (dB)')
+title('Event triggered spike rate of cell 1')
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(1, :, :)))')
+axis xy
+colormap('jet'), colorbar('northoutside')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+xlabel('Time around event onset (s)')
+ylabel('Frquency (Hz)')
+title('Event triggered spectrogram lower bound of cell 1 spike train')
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, 10*log10(squeeze(Serr(2, :, :)))')
+axis xy
+colormap('jet'), colorbar('northoutside')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+xlabel('Time around event onset (s)')
+ylabel('Frquency (Hz)')
+title('Event triggered spectrogram upper bound of cell 1 spike train')
+
+%%
+% *Derivative of the time-frequency spectrum of spike train*
+
+phi=[0 pi/2];
+[dS, t, f] = mtdspecgrampt(cell1_trig, movingwin, phi, params);
+
+% plot the results
+figure
+subplot(211)
+imagesc(t-wintrig(1), f, squeeze(dS(1,:,:))')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+xlabel('Time around event onset (s)')
+ylabel('Frquency (Hz)')
+title(sprintf('Dirivative spectrogram of cell 1 spike train at angle %0.1fº',...
+   rad2deg(phi(1))))
+
+subplot(212)
+imagesc(t-wintrig(2), f, squeeze(dS(2,:,:))')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+xlabel('Time around event onset (s)')
+ylabel('Frquency (Hz)')
+title(sprintf('Dirivative spectrogram of cell 1 spike train at angle %0.1fº',...
+   rad2deg(phi(2))))
+
+%%
+% *Coherogram between the two spike trains*
+
+cell2_trig = createdatamatpt(dsp(2),E1,wintrig);
+[C, phi, S12, S1, S2, t, f, zerosp, confC, phistd, Cerr] = ...
+    cohgrampt(cell1_trig, cell2_trig, movingwin, params, fscorr);
+
+% display the results
+fprintf('zerosp = %d\n', zerosp)
+fprintf('Confidence level of coherogram between cell 1 and 2 at %0.2f%% leve is %0.2f.\n',...
+    1-params.err(2), confC)
+
+% plot the results
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, C')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram magnitude between cell 1 and 2')
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, phi')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram phase between cell 1 and 2')
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, squeeze(Cerr(1, :, :))')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram magnitude lower bound between cell 1 and 2')
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, squeeze(Cerr(2, :, :))')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram magnitude upper bound between cell 1 and 2')
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, (phi-phistd)')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram phase lower bound between cell 1 and 2')
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, (phi+phistd)')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+xlabel('Time (s)')
+ylabel('Frequency (Hz)')
+title('Coherogram phase upper bound between cell 1 and 2')
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(S1)')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+ylabel('Frequency (Hz)')
+title('Spectrogram of cell 1')
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, 10*log10(S2)')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+ylabel('Frequency (Hz)')
+title('Spectrogram of cell 2')
+
+figure
+subplot(2, 1, 1)
+imagesc(t-wintrig(1), f, 10*log10(abs(S12))')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+ylabel('Frequency (Hz)')
+title('Cross spectrogram magnitude of cell 1 and 2')
+
+subplot(2, 1, 2)
+imagesc(t-wintrig(1), f, angle(S12)')
+line([0 0], get(gca, 'ylim'), 'Color', 'w', 'LineWidth', 2)
+axis xy
+colormap('jet'), colorbar
+ylabel('Frequency (Hz)')
+title('Cross spectrogram phase of cell 1 and 2')
+
+%%
+% Analysis: Binned spike counts
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); % extract spikes occurring between 20 and 30 seconds
+
+data=dN;
+[S,f,R,Serr]=mtspectrumpb(data,params);
+plot(f,10*log10(S),f,10*log10(Serr(1,:)), f,10*log10(Serr(2,:))); %line(get(gca,'xlim'),[10*log10(R) 10*log10(R)]);
+
+data=dN;
+phi=[0 pi/2];
+[dS,f]=mtdspectrumpb(data,phi,params);
+figure; plot(f,dS); 
+
+data=dN;
+data1=data(:,1); data2=data(:,2);fscorr=[];t=[];
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencypb(data1,data2,params);
+figure; subplot(311); plot(f,C);subplot(312); plot(f,10*log10(S1)); subplot(313); plot(f,10*log10(S2));
+
+E=targon(find(targets==direction)); E=E(find(E>20 & E<450)); [dN,t]=binspikes(dsp,params.Fs,[20 500]);data=dN(:,1);
+[S,f,R,Serr]=mtspectrumtrigpb(data,E,wintrig,params);
+figure;plot(f,10*log10(S),f,10*log10(Serr(1,:)),f,10*log10(Serr(2,:)));
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); % extract spikes occurring between 20 and 30 seconds
+data=dN;
+[C,phi,S12,f,zerosp,confC,phistd,Cerr]=cohmatrixpb(data,params,fscorr);
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); % extract spikes occurring between 20 and 30 seconds
+data=dN;
+[S,t,f,R,Serr]=mtspecgrampb(data,movingwin,params);
+figure;imagesc(t,f,10*log10(S)'); axis xy; colorbar
+
+clear R Serr Cerr S C phierr dN dS data1 data2
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); % extract spikes occurring between 20 and 30 seconds
+data=dN;
+phi=[0 pi/2];
+[dS,t,f]=mtdspecgrampb(data,movingwin,phi,params);
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); % extract spikes occurring between 20 and 30 seconds
+data=dN;
+data1=data(:,1); data2=data(:,2);
+[C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgrampb(data1,data2,movingwin,params,fscorr);
+
+[dN,t]=binspikes(dsp,params.Fs); % extract spikes
+dN=dN(:,1);
+E=E(1:6);
+data=dN;
+[S,t,f,R,Serr]=mtspecgramtrigpb(data,E,wintrig,movingwin,params);
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); % extract spikes occurring between 20 and 30 seconds
+data=dN;
+data=data(:,1);
+[S,f,R,varS]=mtspectrumsegpb(data,winseg,params,segave,fscorr);
+figure; plot(f,10*log10(S)); line(get(gca,'xlim'),10*log10([R R])); 
+
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); % extract spikes occurring between 20 and 30 seconds
+data=dN;
+data1=data(:,1);data2=data(:,2);
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegpb(data1,data2,winseg,params);
+
+%%
+% Analysis - hybrid: one continous and one point process stored as counts
+%
+data1=dlfp(20000:30000,:);data1=data1(:,1:2); [dN,t]=binspikes(dsp,params.Fs,[20 30]); % extract spikes occurring between 20 and 30 seconds
+data2=dN; data2=data2(1:end,:);
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencycpb(data1,data2,params);
+
+data1=data1(:,1); data2=data2(:,1);
+[C,phi,S12,S1,S2,f,zerosp,confC,phistd,Cerr]=coherencysegcpb(data1,data2,winseg,params,segave,fscorr);
+
+
+data1=dlfp(20000:30000,:); data1=data1(:,1:2);
+[dN,t]=binspikes(dsp,params.Fs,[20 30]); % extract spikes occurring between 20 and 30 seconds
+data2=dN; data2=data2(1:end,:);
+[C,phi,S12,S1,S2,t,f,zerosp,confC,phistd,Cerr]=cohgramcpb(data1,data2,movingwin,params,fscorr);
+
+%% References
+% 
+% # Pesaran, B., Pezaris, J. S., Sahani, M., Mitra, P. P., & Andersen, R.
+%   A. (2002). Temporal structure in neuronal activity during working
+%   memory in macaque parietal cortex. Nature Neuroscience, 5(8), 805-811.
+% # Bokil, H., Andrews, P., Kulkarni, J. E., Mehta, S., & Mitra, P. P.
+%   (2010). Chronux: A platform for analyzing neural signals. Journal of
+%   Neuroscience Methods, 192(1), 146-151.
+%   doi:10.1016/j.jneumeth.2010.06.020
+% # Mitra, P. P., & Pesaran, B. (1999). Analysis of dynamic brain imaging
+%   data. Biophysical Journal, 76(2), 691-708.
+% # Mitra, P., & Bokil, H. (2008). Observed brain dynamics. New York:
+%   Oxford University Press.
+% 
+% _Modified by Richard J. Cui (richard.jie.cui@gmail.com) on Thu 03/26/2020
+% 10:49:56.888 AM_
+##### SOURCE END #####
+--></body></html>
