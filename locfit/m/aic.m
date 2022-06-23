@@ -1,5 +1,4 @@
 function g=aic(varargin)
-%AIC --- help for idParametric/aic ---
 
 pen = 2.0;
 

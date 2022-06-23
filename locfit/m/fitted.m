@@ -10,4 +10,4 @@ function y = fitted(fit)
 z = predict(fit,'d','restyp','fit');
 y = backtr(z,fit);
 
-return
+return;
