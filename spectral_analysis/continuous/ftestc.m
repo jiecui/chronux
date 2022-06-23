@@ -4,6 +4,7 @@ function [Fval, A, f, sig, sd] = ftestc(data, params, p, plt)
     % Syntax:
     %   [Fval, A, f, sig, sd] = ftestc(data, params, p, plt)
     %
+    % Input(s):
     %   data        - (data in [N,C] i.e. time x channels/trials or a single
     %                  vector) - required.
     %   params      - (structure containing parameters) - params has the
@@ -48,7 +49,7 @@ function [Fval, A, f, sig, sd] = ftestc(data, params, p, plt)
     % Outputs:
     %   Fval        - (F-statistic in frequency x channels/trials format)
     %   A           - (Line amplitude for X in frequency x channels/trials form)
-    %	  f           - (frequencies of evaluation)
+    %	f           - (frequencies of evaluation)
     %   sig         - (F distribution (1-p)% confidence level)
     %   sd          - (standard deviation of the amplitude A)
 
