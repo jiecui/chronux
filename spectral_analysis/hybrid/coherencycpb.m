@@ -26,17 +26,17 @@ function [C, phi, S12, S1, S2, f, zerosp, confC, phistd, Cerr] = coherencycpb(da
     %                               be consistent with the units of params.Fs: W can
     %                               be in Hz if and only if params.Fs is in Hz.
     %                               The default is to use form 1 with TW=3 and K=5
-    %
+    %                  Fs     : (sampling frequency) - optional. Default 1.
+    %                  fpass  : (frequency band to be used in the calculation 
+    %                           in the form [fmin fmax])- optional. Default 
+    %                           all frequencies between 0 and Fs/2. Note that
+    %                           units of Fs and fpass have to be consistent.
     %	        pad		    (padding factor for the FFT) - optional (can take values -1,0,1,2...).
     %                    -1 corresponds to no padding, 0 corresponds to padding
     %                    to the next highest power of 2 etc.
     %			      	 e.g. For N = 500, if PAD = -1, we do not pad; if PAD = 0, we pad the FFT
     %			      	 to 512 points, if pad=1, we pad to 1024 points etc.
     %			      	 Defaults to 0.
-    %           Fs   (sampling frequency) - optional. Default 1.
-    %           fpass    (frequency band to be used in the calculation in the form
-    %                                   [fmin fmax])- optional.
-    %                                   Default all frequencies between 0 and Fs/2
     %           err  (error calculation [1 p] - Theoretical error bars; [2 p] - Jackknife error bars
     %                                   [0 p] or 0 - no error bars) - optional. Default 0.
     %           trialave (average over trials when 1, don't average when 0) - optional. Default 0
