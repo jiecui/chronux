@@ -10,7 +10,7 @@ function [J, Msp, Nsp] = mtfftpb(data, tapers, nfft)
     %    nfft  	    - (length of padded data)
     %
     % Output:
-    %    J 	    - (fft in form frequency index x taper index x channels/trials)
+    %    J 	        - (fft in form frequency index x taper index x channels/trials)
     %    Msp 	    - (number of spikes per sample in each channel)
     %    Nsp 	    - (number of spikes in each channel)
 
