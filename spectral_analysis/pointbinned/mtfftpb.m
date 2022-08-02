@@ -26,8 +26,8 @@ function [J, Msp, Nsp] = mtfftpb(data, tapers, nfft)
         error('Need all input arguments')
     end
 
-    % point process
-    % -------------
+    % binned point process
+    % --------------------
     data = change_row_to_column(data); % changes data stored as a row vector to a column vector
     [N, C] = size(data); % size of data
     Nsp = sum(data, 1); % number of spikes in each channel
