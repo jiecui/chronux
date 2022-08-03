@@ -22,6 +22,8 @@ function [J, Msp, Nsp] = mtfftpb(data, tapers, nfft)
     %
     % Email: richard.cui@utoronto.ca
 
+    % parse inputs
+    % ------------
     if nargin < 3
         error('Need all input arguments')
     end
