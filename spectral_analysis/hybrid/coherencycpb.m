@@ -76,6 +76,8 @@ function [C, phi, S12, S1, S2, f, zerosp, confC, phistd, Cerr] = coherencycpb(da
     %
     % Email: richard.cui@utoronto.ca
 
+    % parse inputs
+    % ------------
     if nargin < 2; error('Need data1 and data2'); end
     if nargin < 3; params = []; end;
     [tapers, pad, Fs, fpass, err, trialave, params] = getparams(params);

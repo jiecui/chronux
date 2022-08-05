@@ -82,33 +82,52 @@ function [C, phi, S12, S1, S2, f, zerosp, confC, phistd, Cerr] = coherencycpt(da
     %
     % Email: richard.cui@utoronto.ca
 
-    if nargin < 2; error('Need data1 and data2'); end;
-    if nargin < 3; params = []; end;
+    % parse inputs
+    % ------------
+    if nargin < 2
+        error('Need data1 and data2')
+    end
+
+    if nargin < 3
+        params = [];
+    end
+
     [tapers, pad, Fs, fpass, err, trialave, params] = getparams(params);
     clear params
-    if nargin < 4 || isempty(fscorr); fscorr = 0; end;
 
-    if nargin < 5 || isempty(t);
+    if nargin < 4 || isempty(fscorr)
+        fscorr = 0;
+    end
+
+    if nargin < 5 || isempty(t)
         [N, C] = size(data1);
         dt = 1 / Fs;
         t = 0:dt:(N - 1) * dt; % time grid for prolates
-    end;
+    end
 
-    if nargout > 7 && err(1) == 0;
+    if nargout > 7 && err(1) == 0
         %   Errors computed only if err(1) is non-zero. Need to change params and run again.
-        error('When errors are desired, err(1) has to be non-zero.');
-    end;
+        error('When errors are desired, err(1) has to be non-zero.')
+    end
 
-    if nargout > 9 && err(1) ~= 2;
-        error('Cerr computed only for Jackknife. Correct inputs and run again');
-    end;
+    if nargout > 9 && err(1) ~= 2
+        error('Cerr computed only for Jackknife. Correct inputs and run again')
+    end
 
+    % compute coherencey
+    % ------------------
+
+    % * frequency grid
     [N, Ch] = check_consistency(data1, data2, 1);
     zerosp = zeros(1, Ch); % intialize the zerosp variable
     N = length(t); % number of points in grid for dpss
     nfft = max(2^(nextpow2(N) + pad), N); % number of points in fft of prolates
     [f, findx] = getfgrid(Fs, nfft, fpass);
+
+    % * tapers
     tapers = dpsschk(tapers, N, Fs); % check tapers
+
+    % * calculation
     J1 = mtfftc(data1, tapers, nfft, Fs); % fourier transform of continuous data
     J1 = J1(findx, :, :); % restrict to required frequencies
     [J2, Msp2, Nsp2] = mtfftpt(data2, tapers, nfft, t, f, findx); % fourier transform of discrete data
