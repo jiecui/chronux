@@ -9,8 +9,8 @@ function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t)
     %   data        - (structure array of spike times with dimension channels/trials;
     %                 also accepts 1d array of spike times) -- required
     %   params      - structure with fields tapers, pad, Fs, fpass, err, trialave
-    %       - optional
-    %           tapers : precalculated tapers from dpss or in the one of the following
+    %                 -- optional
+    %                 tapers  :precalculated tapers from dpss or in the one of the following
     %                    forms:
     %                   (1) A numeric vector [TW K] where TW is the
     %                       time-bandwidth product and K is the number of
