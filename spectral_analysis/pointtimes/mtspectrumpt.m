@@ -10,12 +10,12 @@ function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t)
     %                 also accepts 1d array of spike times) -- required
     %   params      - structure with fields tapers, pad, Fs, fpass, err, trialave
     %                 -- optional
-    %                 tapers  :precalculated tapers from dpss or in the one of the following
-    %                    forms:
-    %                   (1) A numeric vector [TW K] where TW is the
-    %                       time-bandwidth product and K is the number of
-    %                       tapers to be used (less than or equal to
-    %                       2TW-1).
+    %                 tapers  :precalculated tapers from dpss or in the one
+    %                          of the following forms: 
+    %                          (1) A numeric vector [TW K] where TW is the 
+    %                              time-bandwidth product and K is the number 
+    %                              of tapers to be used (less than or equal 
+    %                              to 2TW-1).
     %                   (2) A numeric vector [W T p] where W is the
     %                       bandwidth, T is the duration of the data and p
     %                       is an integer such that 2TW-p tapers are used. In
@@ -27,8 +27,7 @@ function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t)
     %                       be consistent with the units of params.Fs: W can
     %                       be in Hz if and only if params.Fs is in Hz.
     %                       The default is to use form 1 with TW=3 and K=5
-    %
-    %	        pad		    (padding factor for the FFT) - optional (can take values -1,0,1,2...).
+    %	               pad		    (padding factor for the FFT) - optional (can take values -1,0,1,2...).
     %                    -1 corresponds to no padding, 0 corresponds to padding
     %                    to the next highest power of 2 etc.
     %			      	 e.g. For N = 500, if PAD = -1, we do not pad; if PAD = 0, we pad the FFT
