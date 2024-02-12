@@ -2,7 +2,7 @@ function [J, Msp, Nsp] = mtfftpt(data, tapers, nfft, t, f, findx)
     % Multi-taper fourier transform - point process given as times
     %
     % Syntax:
-    %   [J, Msp, Nsp] = mtfftpt(data, tapers, nfft, t, f, findx) - all arguments required
+    %   [J, Msp, Nsp] = mtfftpt(data, tapers, nfft, t, f, findx)
     %
     % Input(s):
     %   data        - (struct array of times with dimension channels/trials;
@@ -19,7 +19,7 @@ function [J, Msp, Nsp] = mtfftpt(data, tapers, nfft, t, f, findx)
     %   Nsp         - (number of spikes in each channel)
 
     % Modified by Richard J. Cui.
-    % $Revision: 0.1 $  $Date: Tue 08/02/2022 12:08:21.795 AM$
+    % $Revision: 0.2 $  $Date: Mon 02/12/2024 09:39:13.829 AM $
     %
     % Rocky Creek Rd NE
     % Rochester, MN 55906 USA
@@ -64,7 +64,8 @@ function [J, Msp, Nsp] = mtfftpt(data, tapers, nfft, t, f, findx)
 
         if isstruct(data)
             fnames = fieldnames(data);
-            eval(['dtmp=data(ch).' fnames{1} ';'])
+            % eval(['dtmp=data(ch).' fnames{1} ';'])
+            dtmp = data(ch).(fnames{1});
             indx = find(dtmp >= min(t) & dtmp <= max(t));
 
             if ~isempty(indx)
