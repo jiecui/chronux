@@ -1,4 +1,4 @@
-function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t)
+function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t, options)
     % Multi-taper spectrum - point process times
     %
     % Syntax:
@@ -52,6 +52,10 @@ function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t)
     %                 calculation routine from a moving window spectrogram
     %                 calculation routine). If left empty, the spike times
     %                 are used to define the grid.
+    %  options      - (structure of options) - optional
+    %                 .Frequency: (frequencies of interest) - optional.
+    %                             -- Default = empty.
+    %
     % Output(s):
     %  S            - (spectrum with dimensions frequency x channels/trials
     %                 if trialave=0; dimension frequency if trialave=1)
@@ -67,24 +71,31 @@ function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t)
     %
     % Email: richard.cui@utoronto.ca
 
-    if nargin < 1
-        error('Need data');
-    end
+    % ======================================================================
+    % parse inputs
+    % ======================================================================
+    arguments
+        data (:, :) {mustBeA(data, ["double", "cell"])}
+        params (:, :) {mustBeA(params, ["struct", "double"])} = []
+        fscorr (1, 1) double {mustBeMember(fscorr, [0, 1])} = 0
+        t (:, :) double = []
+    end % positional
 
-    if nargin < 2
-        params = [];
-    end
+    arguments
+        options.Frequency (1, :) double = double.empty(1, 0)
+    end % optional
 
+    f = options.Frequency;
+
+    % ======================================================================
+    % main
+    % ======================================================================
     [tapers, pad, Fs, fpass, err, trialave] = getparams(params);
     clear params
     data = change_row_to_column(data);
 
     if nargout > 3 && err(1) == 0
         error('cannot compute error bars with err(1)=0; change params and run again');
-    end
-
-    if nargin < 3 || isempty(fscorr)
-        fscorr = 0;
     end
 
     if nargin < 4 || isempty(t)
@@ -94,8 +105,17 @@ function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t)
     end
 
     N = length(t); % number of points in grid for dpss
-    nfft = max(2 ^ (nextpow2(N) + pad), N); % number of points in fft of prolates
-    [f, findx] = getfgrid(Fs, nfft, fpass); % get frequency grid for evaluation
+
+    if isempty(f)
+        nfft = max(2 ^ (nextpow2(N) + pad), N); % number of points in fft of prolates
+        [f, findx] = getfgrid(Fs, nfft, fpass); % get frequency grid for evaluation
+    else
+        df = f(2) - f(1);
+        nfft = round(Fs / df);
+        findx = find(f >= fpass(1) & f <= fpass(2));
+        f = f(findx);
+    end % if
+
     tapers = dpsschk(tapers, N, Fs); % check tapers
     [J, Msp, Nsp] = mtfftpt(data, tapers, nfft, t, f, findx); % mt fft for point process times
     S = squeeze(mean(conj(J) .* J, 2));
