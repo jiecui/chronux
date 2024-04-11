@@ -2,7 +2,7 @@ function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t, options)
     % Multi-taper spectrum - point process times
     %
     % Syntax:
-    %   [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t)
+    %   [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t, options)
     %
     % Input(s):
     %   data        - (structure array of spike times with dimension channels/trials;
@@ -64,7 +64,7 @@ function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t, options)
     %  Serr         - (error bars) - only if err(1)>=1
 
     % Modified by Richard J. Cui.
-    % $Revision: 0.1 $  $Date: Fri 02/09/2024 18:11:40.605 PM $
+    % $Revision: 0.2 $  $Date: Thu 04/11/2024 14:51:21.149 PM $
     %
     % Rocky Creek Rd NE
     % Rochester, MN 55906 USA
@@ -110,8 +110,7 @@ function [S, f, R, Serr] = mtspectrumpt(data, params, fscorr, t, options)
         nfft = max(2 ^ (nextpow2(N) + pad), N); % number of points in fft of prolates
         [f, findx] = getfgrid(Fs, nfft, fpass); % get frequency grid for evaluation
     else
-        df = f(2) - f(1);
-        nfft = round(Fs / df);
+        nfft = length(f);
         findx = find(f >= fpass(1) & f <= fpass(2));
         f = f(findx);
     end % if
